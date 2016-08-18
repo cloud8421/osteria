@@ -8,10 +8,6 @@ defmodule Osteria.Table do
             orders: []
 
   @default_thinking_time_range 1000..10000
-  @dishes ["spaghetti all'amatriciana",
-           "spaghetti alla carbonara",
-           "polenta e cotechino",
-           "arrosto di vitello"]
 
   def start_link(number, size) do
     GenServer.start_link(__MODULE__, [number, size], [])
@@ -49,7 +45,7 @@ defmodule Osteria.Table do
   end
 
   defp random_dish do
-    Enum.random(@dishes)
+    Osteria.Menu.names |> Enum.random()
   end
 
   defp thinking_time_range do
