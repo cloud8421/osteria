@@ -3,7 +3,12 @@
 use Mix.Config
 
 config :osteria, Osteria.Table,
-  thinking_time_range: 100..1000
+  thinking_time_range: 500..5000
+
+config :osteria, Osteria.Chef,
+  organizing_speed: 50
+
+# config :logger, level: :info
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
@@ -21,7 +26,6 @@ config :osteria, Osteria.Table,
 #
 # Or configure a 3rd-party app:
 #
-#     config :logger, level: :info
 #
 
 # It is also possible to import configuration files, relative to this

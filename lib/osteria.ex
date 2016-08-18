@@ -9,9 +9,14 @@ defmodule Osteria do
     # Define workers and child supervisors to be supervised
     children = [
       worker(Osteria.Table, [1, 3], id: 1),
-      worker(Osteria.Table, [2, 2], id: 2),
-      worker(Osteria.Table, [3, 5], id: 3),
-      worker(Osteria.Table, [4, 2], id: 4)
+      worker(Osteria.Table, [2, 4], id: 2),
+      worker(Osteria.Table, [3, 7], id: 3),
+      worker(Osteria.Table, [4, 2], id: 4),
+      worker(Osteria.Table, [5, 3], id: 5),
+      worker(Osteria.Table, [6, 4], id: 6),
+      worker(Osteria.Table, [7, 2], id: 7),
+      worker(Osteria.Waiter, []),
+      worker(Osteria.Chef, [])
       # Starts a worker by calling: Osteria.Worker.start_link(arg1, arg2, arg3)
       # worker(Osteria.Worker, [arg1, arg2, arg3]),
     ]

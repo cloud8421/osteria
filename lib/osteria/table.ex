@@ -1,11 +1,9 @@
 defmodule Osteria.Table do
   use GenServer
 
-  require Logger
-
   defstruct number: 0,
             size: 0,
-            orders: []
+            dishes: []
 
   @default_thinking_time_range 1000..10000
 
@@ -28,14 +26,16 @@ defmodule Osteria.Table do
 
   def handle_info(:decide, state = %__MODULE__{number: number,
                                                size: size,
-                                               orders: orders}) do
-    case length(orders) do
+                                               dishes: dishes}) do
+    case length(dishes) do
       ^size ->
-        Logger.info "table=#{number} is ready with: #{inspect orders}"
+        inform_waiter(number, dishes)
         {:noreply, state}
       _ ->
         schedule_decide()
-        {:noreply, %__MODULE__{state | orders: [random_dish() | orders]}}
+        new_dish = random_dish()
+        Osteria.Log.log_table_decision(number, new_dish)
+        {:noreply, %__MODULE__{state | dishes: [new_dish | dishes]}}
     end
   end
 
@@ -51,5 +51,9 @@ defmodule Osteria.Table do
   defp thinking_time_range do
     Application.get_env(:osteria, __MODULE__)
     |> Keyword.get(:thinking_time_range, @default_thinking_time_range)
+  end
+
+  defp inform_waiter(table_number, dishes) do
+    Osteria.Waiter.collect_order(table_number, dishes)
   end
 end
