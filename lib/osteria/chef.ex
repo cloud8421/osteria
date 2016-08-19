@@ -3,41 +3,33 @@ defmodule Osteria.Chef do
   use GenStage
 
   @default_organizing_speed 100
-  @warmup_time 1000
 
   def start_link do
     GenStage.start_link(__MODULE__, [], name: __MODULE__)
   end
 
   def init([]) do
-    Process.send_after(self(), :start_waiting, @warmup_time)
+    :ok = GenStage.async_subscribe(__MODULE__, to: Osteria.Waiter,
+                                               min_demand: 1,
+                                               max_demand: 2)
     {:consumer, []}
   end
 
-  def handle_events(:new_order, _from, state) do
-    {:noreply, [], state}
-  end
-  def handle_events([:new_order], _from, state) do
-    {:noreply, [], state}
-  end
   def handle_events(orders, _from, state) do
     organize_orders(orders)
     {:noreply, [], [orders | state]}
   end
 
-  def handle_info(:start_waiting, state) do
-    :ok = GenStage.async_subscribe(__MODULE__, to: Osteria.Waiter,
-                                               min_demand: 0,
-                                               max_demand: 2)
-    {:noreply, [], state}
+  defp organize_orders(orders) do
+    do_organize_orders(orders)
+    Osteria.Log.log_chef_organization(orders)
   end
 
-  defp organize_orders(orders) do
+  defp do_organize_orders(orders) do
     time = Enum.reduce(orders, 0, fn(order, acc) ->
       acc + length(order.to_prepare)
     end) * organizing_speed()
-    Osteria.Log.log_chef_organization(orders)
-    :timer.sleep(time)
+    Process.sleep(time)
   end
 
   defp organizing_speed do
