@@ -17,19 +17,26 @@ defmodule Osteria.Waiter do
   end
 
   def init(:ok) do
-    {:producer, {[], 0}}
+    {:producer, {:queue.new, 0}, dispatcher: GenStage.BroadcastDispatcher}
   end
 
-  def handle_demand(incoming_demand, {orders, demand}) do
-    {demanded, rest} = Enum.split(orders, incoming_demand + demand)
-    {:noreply, demanded, {rest, incoming_demand}}
+  def handle_call({:new_order, order}, from, {queue, demand}) do
+    dispatch_orders(:queue.in({from, order}, queue), demand, [])
   end
 
-  def handle_call({:new_order, order}, from, {orders, demand}) do
-    GenStage.reply(from, :ok)
-    Osteria.Log.log_table_order(order.table_number, order.to_prepare)
-    new_orders = [order | orders]
-    {demanded, rest} = Enum.split(new_orders, demand)
-    {:noreply, demanded, {rest, demand}}
+  def handle_demand(incoming_demand, {queue, demand}) do
+    dispatch_orders(queue, incoming_demand + demand, [])
+  end
+
+  defp dispatch_orders(queue, demand, orders) do
+    with d when d > 0 <- demand,
+         {item, queue} = :queue.out(queue),
+         {:value, {from, order}} <- item do
+      GenStage.reply(from, :ok)
+      Osteria.Log.log_table_order(order.table_number, order.to_prepare)
+      dispatch_orders(queue, demand - 1, [order | orders])
+    else
+      _ -> {:noreply, Enum.reverse(orders), {queue, demand}}
+    end
   end
 end
