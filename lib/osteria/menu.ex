@@ -17,4 +17,8 @@ defmodule Osteria.Menu do
   def names do
     Enum.map(all(), &(&1.name))
   end
+
+  def find_by_name(name) do
+    Enum.find(all(), fn(d) -> d.name == name end)
+  end
 end

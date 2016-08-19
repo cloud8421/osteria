@@ -16,7 +16,11 @@ defmodule Osteria do
       worker(Osteria.Table, [6, 4], id: 6),
       worker(Osteria.Table, [7, 2], id: 7),
       worker(Osteria.Waiter, []),
-      worker(Osteria.Chef, [])
+      worker(Osteria.Chef, []),
+      worker(Osteria.LineCook, [:grill], id: :grill),
+      worker(Osteria.LineCook, [:pasta], id: :pasta),
+      worker(Osteria.LineCook, [:stew], id: :stew),
+      worker(Osteria.LineCook, [:oven], id: :oven)
       # Starts a worker by calling: Osteria.Worker.start_link(arg1, arg2, arg3)
       # worker(Osteria.Worker, [arg1, arg2, arg3]),
     ]
