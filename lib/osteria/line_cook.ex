@@ -2,6 +2,8 @@ defmodule Osteria.LineCook do
   alias Experimental.GenStage
   use GenStage
 
+  @cook_speed 2000
+
   def partition(:pasta), do: 0
   def partition(:stew), do: 1
   def partition(:oven), do: 2
@@ -21,7 +23,7 @@ defmodule Osteria.LineCook do
 
   def handle_events(dishes, _from, area) do
     Enum.map(dishes, fn({table_number, dish}) ->
-      Process.sleep(3000)
+      Process.sleep(@cook_speed)
       Osteria.Log.log_line_cook_preparation({table_number, dish}, area)
       Osteria.Waiter.deliver_dish(table_number, dish)
     end)
