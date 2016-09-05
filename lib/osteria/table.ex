@@ -51,6 +51,7 @@ defmodule Osteria.Table do
 
   def handle_info(:finished_eating, state = %__MODULE__{number: number}) do
     Osteria.Log.log_table_finish(number)
+    Process.sleep(2000)
     {:stop, :normal, state}
   end
 
