@@ -3,7 +3,8 @@
 use Mix.Config
 
 config :osteria, Osteria.Table,
-  thinking_time_range: 500..5000
+  thinking_time_range: 500..1000,
+  waiting_time: 5000
 
 config :osteria, Osteria.Chef,
   organizing_speed: 50

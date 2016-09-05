@@ -6,12 +6,14 @@ defmodule Osteria.Table do
             dishes: []
 
   @default_thinking_time_range 1000..10000
+  @default_waiting_time 10000
 
   def start_link(number, size) do
     GenServer.start_link(__MODULE__, [number, size], [])
   end
 
   def init([number, size]) do
+    Osteria.Log.log_table_sitting(number)
     :rand.seed(:exsplus, :os.timestamp)
     state = %__MODULE__{number: number,
                         size: size}
@@ -30,13 +32,18 @@ defmodule Osteria.Table do
     case length(dishes) do
       ^size ->
         inform_waiter(number, dishes)
-        {:noreply, state}
+        {:noreply, state, waiting_time()}
       _ ->
         schedule_decide()
         new_dish = random_dish()
         Osteria.Log.log_table_decision(number, new_dish)
         {:noreply, %__MODULE__{state | dishes: [new_dish | dishes]}}
     end
+  end
+
+  def handle_info(:timeout, state = %__MODULE__{number: number}) do
+    Osteria.Log.log_table_leaving(number)
+    {:stop, :normal, state}
   end
 
   defp schedule_decide do
@@ -51,6 +58,11 @@ defmodule Osteria.Table do
   defp thinking_time_range do
     Application.get_env(:osteria, __MODULE__)
     |> Keyword.get(:thinking_time_range, @default_thinking_time_range)
+  end
+
+  defp waiting_time do
+    Application.get_env(:osteria, __MODULE__)
+    |> Keyword.get(:waiting_time, @default_waiting_time)
   end
 
   defp inform_waiter(table_number, dishes) do

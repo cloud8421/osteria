@@ -13,6 +13,18 @@ defmodule Osteria.Log do
     |> IO.puts
   end
 
+  def log_table_sitting(number) do
+    "Table #{number} is choosing dishes"
+    |> colorize(white())
+    |> IO.puts
+  end
+
+  def log_table_leaving(number) do
+    "Table #{number} has waited too long, people decided to leave"
+    |> colorize(red())
+    |> IO.puts
+  end
+
   def log_chef_organization(orders) do
     tables = orders
              |> Enum.map(&(&1.table_number))
