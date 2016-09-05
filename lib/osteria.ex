@@ -23,7 +23,10 @@ defmodule Osteria do
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Osteria.Supervisor]
+    opts = [strategy: :one_for_one,
+            max_restarts: 10,
+            max_seconds: 5,
+            name: Osteria.Supervisor]
     Supervisor.start_link(children, opts)
   end
 end
