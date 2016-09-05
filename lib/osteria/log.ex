@@ -34,9 +34,33 @@ defmodule Osteria.Log do
    |> log
   end
 
-  def log_line_cook_preparation(dish, area) do
-    "Line cook for #{area} prepared #{dish.name}"
+  def log_line_cook_preparation({table_number, dish}, area) do
+    "Line cook for #{area} prepared #{dish.name} for table: #{table_number}"
     |> colorize(green())
+    |> log
+  end
+
+  def log_table_delivery(table_number, dish) do
+    "Waiter delivering #{dish.name} to table #{table_number}"
+    |> colorize(blue())
+    |> log
+  end
+
+  def log_table_receive(table_number, dish) do
+    "Table #{table_number} received #{dish.name}"
+    |> colorize(yellow())
+    |> log
+  end
+
+  def log_table_received_all(table_number) do
+    "Table #{table_number} received all dishes, now eating!"
+    |> colorize(yellow())
+    |> log
+  end
+
+  def log_table_finish(table_number) do
+    "Table #{table_number} finished eating!"
+    |> colorize(white())
     |> log
   end
 

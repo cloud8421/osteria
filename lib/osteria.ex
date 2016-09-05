@@ -8,6 +8,7 @@ defmodule Osteria do
 
     # Define workers and child supervisors to be supervised
     children = [
+      worker(Osteria.TableMap, []),
       worker(Osteria.Table, [1, 3], id: 1),
       worker(Osteria.Table, [2, 4], id: 2),
       worker(Osteria.Table, [3, 7], id: 3),
@@ -28,7 +29,7 @@ defmodule Osteria do
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one,
-            max_restarts: 10,
+            max_restarts: 20,
             max_seconds: 5,
             name: Osteria.Supervisor]
     Supervisor.start_link(children, opts)

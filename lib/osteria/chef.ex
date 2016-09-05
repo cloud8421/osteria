@@ -12,8 +12,8 @@ defmodule Osteria.Chef do
 
   def init([]) do
     :ok = GenStage.async_subscribe(__MODULE__, to: Osteria.Waiter,
-                                               min_demand: 1,
-                                               max_demand: 2)
+                                               min_demand: 3,
+                                               max_demand: 5)
     {:producer_consumer, [],
      dispatcher: {GenStage.PartitionDispatcher,
                   partitions: 4,
@@ -29,7 +29,9 @@ defmodule Osteria.Chef do
 
   defp extract_dishes(orders) do
     Enum.flat_map(orders, fn(order) ->
-      Enum.map(order.to_prepare, &Menu.find_by_name/1)
+      Enum.map(order.to_prepare, fn(dish_name) ->
+        {order.table_number, Menu.find_by_name(dish_name)}
+      end)
     end)
   end
 
@@ -52,7 +54,7 @@ defmodule Osteria.Chef do
     |> Keyword.get(:organizing_speed, @default_organizing_speed)
   end
 
-  defp partition(dish, _line_cooks_total) do
-    {dish, Osteria.LineCook.partition(dish.type)}
+  defp partition({table_number, dish}, _line_cooks_total) do
+    {{table_number, dish}, Osteria.LineCook.partition(dish.type)}
   end
 end

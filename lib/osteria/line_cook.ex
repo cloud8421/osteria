@@ -13,15 +13,17 @@ defmodule Osteria.LineCook do
 
   def init(area) do
     :ok = GenStage.async_subscribe(self(), to: Osteria.Chef,
-                                           min_demand: 1,
-                                           max_demand: 2,
+                                           min_demand: 2,
+                                           max_demand: 3,
                                            partition: partition(area))
     {:consumer, area}
   end
 
   def handle_events(dishes, _from, area) do
-    Enum.map(dishes, fn(dish) ->
-      Osteria.Log.log_line_cook_preparation(dish, area)
+    Enum.map(dishes, fn({table_number, dish}) ->
+      Process.sleep(3000)
+      Osteria.Log.log_line_cook_preparation({table_number, dish}, area)
+      Osteria.Waiter.deliver_dish(table_number, dish)
     end)
     {:noreply, [], area}
   end
