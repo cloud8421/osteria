@@ -6,11 +6,12 @@ defmodule Osteria.SocketHandler do
   end
 
   @timeout 60000 # terminate if no activity for one minute
+  @refresh_interval 100
 
   #Called on websocket connection initialization.
   def websocket_init(_type, req, _opts) do
     state = %{}
-    Process.send_after(self(), :send_status, 500)
+    schedule_refresh()
     {:ok, req, state, @timeout}
   end
 
@@ -23,7 +24,7 @@ defmodule Osteria.SocketHandler do
     text = Osteria.Status.get
            |> serialize_status
            |> Poison.encode!
-    Process.send_after(self(), :send_status, 500)
+    schedule_refresh()
     {:reply, {:text, text}, req, state}
   end
 
@@ -54,5 +55,9 @@ defmodule Osteria.SocketHandler do
       entry = %{area: area, dishes: dish_names}
       [entry | acc]
     end)
+  end
+
+  defp schedule_refresh do
+    Process.send_after(self(), :send_status, @refresh_interval)
   end
 end
