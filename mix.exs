@@ -29,6 +29,7 @@ defmodule Osteria.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [{:exsync, "~> 0.1", only: :dev},
+     {:plug, "~> 1.2"},
      {:gen_stage, "~> 0.5.0"}]
   end
 end
