@@ -1,2 +1,10 @@
 @import "bourbon/_bourbon";
 @import "base/_base";
+
+main {
+  display: flex;
+
+  div {
+    width: 33.33333%;
+  }
+}

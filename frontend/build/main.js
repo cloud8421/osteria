@@ -8324,7 +8324,7 @@ var _user$project$Main$subscriptions = function (model) {
 			[
 				A2(
 				_elm_lang$core$Time$every,
-				_elm_lang$core$Time$second,
+				100,
 				_elm_lang$core$Basics$always(_user$project$Types$Tick))
 			]));
 };
@@ -8347,6 +8347,79 @@ var _user$project$Main$update = F2(
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 		}
 	});
+var _user$project$Main$lineCookItem = function (lineCook) {
+	return A2(
+		_elm_lang$html$Html$li,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$span,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(lineCook.area)
+					])),
+				A2(
+				_elm_lang$html$Html$span,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(
+						A2(_elm_lang$core$String$join, ', ', lineCook.dishes))
+					]))
+			]));
+};
+var _user$project$Main$lineCookList = function (lineCooks) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$ul,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				A2(_elm_lang$core$List$map, _user$project$Main$lineCookItem, lineCooks))
+			]));
+};
+var _user$project$Main$dishItem = function (dish) {
+	return A2(
+		_elm_lang$html$Html$li,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html$text(dish)
+			]));
+};
+var _user$project$Main$chefStatus = function (chef) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$p,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(
+						_elm_lang$core$Basics$toString(chef.table_number))
+					])),
+				A2(
+				_elm_lang$html$Html$ul,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				A2(_elm_lang$core$List$map, _user$project$Main$dishItem, chef.dishes))
+			]));
+};
 var _user$project$Main$tableItem = function (table) {
 	return A2(
 		_elm_lang$html$Html$li,
@@ -8385,16 +8458,24 @@ var _user$project$Main$tableItem = function (table) {
 };
 var _user$project$Main$tableList = function (tables) {
 	return A2(
-		_elm_lang$html$Html$ul,
+		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
 			[]),
-		A2(_elm_lang$core$List$map, _user$project$Main$tableItem, tables));
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$ul,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				A2(_elm_lang$core$List$map, _user$project$Main$tableItem, tables))
+			]));
 };
 var _user$project$Main$view = function (model) {
 	var _p1 = model;
 	if (_p1.ctor === 'Just') {
+		var _p2 = _p1._0;
 		return A2(
-			_elm_lang$html$Html$section,
+			_elm_lang$html$Html$div,
 			_elm_lang$core$Native_List.fromArray(
 				[]),
 			_elm_lang$core$Native_List.fromArray(
@@ -8407,7 +8488,16 @@ var _user$project$Main$view = function (model) {
 						[
 							_elm_lang$html$Html$text('Osteria')
 						])),
-					_user$project$Main$tableList(_p1._0.tables)
+					A2(
+					_elm_lang$html$Html$main$,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_user$project$Main$tableList(_p2.tables),
+							_user$project$Main$chefStatus(_p2.chef),
+							_user$project$Main$lineCookList(_p2.line_cooks)
+						]))
 				]));
 	} else {
 		return A2(

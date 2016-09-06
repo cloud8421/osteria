@@ -24,17 +24,50 @@ tableItem table =
 
 
 tableList tables =
-    ul []
-        (List.map tableItem tables)
+    div []
+        [ ul []
+            (List.map tableItem tables)
+        ]
+
+
+dishItem dish =
+    li [] [ text dish ]
+
+
+chefStatus chef =
+    div []
+        [ p []
+            [ text <| toString <| chef.table_number ]
+        , ul []
+            (List.map dishItem chef.dishes)
+        ]
+
+
+lineCookItem lineCook =
+    li []
+        [ span [] [ text <| lineCook.area ]
+        , span [] [ text <| String.join ", " lineCook.dishes ]
+        ]
+
+
+lineCookList lineCooks =
+    div []
+        [ ul []
+            (List.map lineCookItem lineCooks)
+        ]
 
 
 view : Model -> Html Msg
 view model =
     case model of
         Just status ->
-            section []
+            div []
                 [ h1 [] [ text "Osteria" ]
-                , tableList status.tables
+                , main' []
+                    [ tableList status.tables
+                    , chefStatus status.chef
+                    , lineCookList status.line_cooks
+                    ]
                 ]
 
         Nothing ->
@@ -64,7 +97,7 @@ update msg model =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ Time.every Time.second (always Tick)
+        [ Time.every 100 (always Tick)
         ]
 
 
