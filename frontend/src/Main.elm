@@ -1,13 +1,14 @@
 module Main exposing (..)
 
+import Data
+import Html exposing (..)
 import Html exposing (div, text, Html)
 import Html.App as Html
+import Json.Decode exposing (decodeString)
 import Platform.Sub as Sub
-import Time
-import Api
-import Types exposing (..)
-import Html exposing (..)
 import String
+import Types exposing (..)
+import WebSocket
 
 
 model : Model
@@ -15,6 +16,7 @@ model =
     Nothing
 
 
+tableItem : Table -> Html Msg
 tableItem table =
     li []
         [ span [] [ text <| toString <| table.number ]
@@ -23,6 +25,7 @@ tableItem table =
         ]
 
 
+tableList : List Table -> Html Msg
 tableList tables =
     div []
         [ ul []
@@ -30,10 +33,12 @@ tableList tables =
         ]
 
 
+dishItem : String -> Html Msg
 dishItem dish =
     li [] [ text dish ]
 
 
+chefStatus : Chef -> Html Msg
 chefStatus chef =
     div []
         [ p []
@@ -43,6 +48,7 @@ chefStatus chef =
         ]
 
 
+lineCookItem : LineCook -> Html Msg
 lineCookItem lineCook =
     li []
         [ span [] [ text <| lineCook.area ]
@@ -50,6 +56,7 @@ lineCookItem lineCook =
         ]
 
 
+lineCookList : List LineCook -> Html Msg
 lineCookList lineCooks =
     div []
         [ ul []
@@ -81,30 +88,39 @@ update msg model =
             ( model, Cmd.none )
 
         Tick ->
-            ( model, Api.getStatus )
+            ( model, getStatus )
 
-        NewStatus status ->
-            ( Just status, Cmd.none )
+        SocketMsg msg ->
+            case (decodeString Data.statusDecoder msg) of
+                Ok status ->
+                    ( Just status, Cmd.none )
 
-        StatusError error ->
-            let
-                dbg =
-                    Debug.log "error" error
-            in
-                ( model, Cmd.none )
+                otherwise ->
+                    ( model, Cmd.none )
+
+
+wsServer : String
+wsServer =
+    "ws://localhost:4001/ws"
+
+
+getStatus : Cmd a
+getStatus =
+    WebSocket.send wsServer "get-status"
 
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ Time.every 100 (always Tick)
+        [ WebSocket.listen wsServer SocketMsg
+        , WebSocket.keepAlive wsServer
         ]
 
 
 main : Program Never
 main =
     Html.program
-        { init = ( model, Api.getStatus )
+        { init = ( model, Cmd.none )
         , view = view
         , update = update
         , subscriptions = subscriptions

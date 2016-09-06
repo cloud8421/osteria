@@ -6,8 +6,7 @@ import Http exposing (Error)
 type Msg
     = NoOp
     | Tick
-    | NewStatus Status
-    | StatusError Http.Error
+    | SocketMsg String
 
 
 type alias Model =

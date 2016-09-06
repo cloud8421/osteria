@@ -1,23 +1,24 @@
-module Api exposing (..)
+module Data exposing (..)
 
-import Http
 import Json.Decode exposing (..)
 import Types exposing (..)
-import Task
 
 
+chefDecoder : Decoder Chef
 chefDecoder =
     object2 Chef
         ("table_number" := int)
         ("orders" := list string)
 
 
+lineCookDecoder : Decoder LineCook
 lineCookDecoder =
     object2 LineCook
         ("area" := string)
         ("dishes" := list string)
 
 
+tableDecoder : Decoder Table
 tableDecoder =
     object3 Table
         ("size" := int)
@@ -25,16 +26,9 @@ tableDecoder =
         ("dishes" := list string)
 
 
+statusDecoder : Decoder Status
 statusDecoder =
     object3 Status
         ("tables" := (list tableDecoder))
         ("line_cooks" := (list lineCookDecoder))
         ("chef" := chefDecoder)
-
-
-getStatus =
-    let
-        req =
-            Http.get statusDecoder "/status"
-    in
-        Task.perform StatusError NewStatus req
