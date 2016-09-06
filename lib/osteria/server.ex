@@ -1,6 +1,10 @@
 defmodule Osteria.Server do
   use Plug.Router
 
+  plug Plug.Static,
+    at: "/assets",
+    from: "frontend/build"
+
   plug :match
   plug :dispatch
 
