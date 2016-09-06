@@ -30,6 +30,7 @@ defmodule Osteria.Mixfile do
   defp deps do
     [{:exsync, "~> 0.1", only: :dev},
      {:cowboy, "~> 1.0.0"},
+     {:poison, "~> 2.2"},
      {:plug, "~> 1.2"},
      {:gen_stage, "~> 0.5.0"}]
   end

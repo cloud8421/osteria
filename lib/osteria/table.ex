@@ -25,6 +25,7 @@ defmodule Osteria.Table do
     :rand.seed(:exsplus, :os.timestamp)
     state = %__MODULE__{number: number,
                         size: size}
+    Osteria.Status.update_table(state)
     send(self(), :look_at_menu)
     {:ok, state}
   end
@@ -38,9 +39,13 @@ defmodule Osteria.Table do
       [] ->
         Osteria.Log.log_table_received_all(number)
         Process.send_after(self(), :finished_eating, eating_time(size))
-        {:noreply, %{state | dishes: []}}
+        new_state = %{state | dishes: []}
+        Osteria.Status.update_table(new_state)
+        {:noreply, new_state}
       some_left ->
-        {:noreply, %{state | dishes: new_dishes}, waiting_time()}
+        new_state = %{state | dishes: new_dishes}
+        Osteria.Status.update_table(new_state)
+        {:noreply, new_state, waiting_time()}
     end
   end
 
@@ -51,6 +56,7 @@ defmodule Osteria.Table do
 
   def handle_info(:finished_eating, state = %__MODULE__{number: number}) do
     Osteria.Log.log_table_finish(number)
+    Osteria.Status.delete_table(number)
     Process.sleep(2000)
     {:stop, :normal, state}
   end
@@ -66,12 +72,15 @@ defmodule Osteria.Table do
         schedule_decide()
         new_dish = random_dish()
         Osteria.Log.log_table_decision(number, new_dish)
-        {:noreply, %__MODULE__{state | dishes: [new_dish | dishes]}}
+        new_state = %{state | dishes: [new_dish | dishes]}
+        Osteria.Status.update_table(new_state)
+        {:noreply, new_state}
     end
   end
 
   def handle_info(:timeout, state = %__MODULE__{number: number}) do
     Osteria.Log.log_table_leaving(number)
+    Osteria.Status.delete_table(number)
     {:stop, :waited_too_long, state}
   end
 

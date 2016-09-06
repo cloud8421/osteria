@@ -2,7 +2,7 @@ defmodule Osteria.LineCook do
   alias Experimental.GenStage
   use GenStage
 
-  @cook_speed 2000
+  @cook_speed 1500
 
   def partition(:pasta), do: 0
   def partition(:stew), do: 1
@@ -15,18 +15,25 @@ defmodule Osteria.LineCook do
 
   def init(area) do
     :ok = GenStage.async_subscribe(self(), to: Osteria.Chef,
-                                           min_demand: 2,
-                                           max_demand: 3,
+                                           min_demand: 3,
+                                           max_demand: 5,
                                            partition: partition(area))
     {:consumer, area}
   end
 
-  def handle_events(dishes, _from, area) do
-    Enum.map(dishes, fn({table_number, dish}) ->
+  def handle_events(dish_tuples, _from, area) do
+    update_status(dish_tuples, area)
+    Enum.map(dish_tuples, fn({table_number, dish}) ->
       Process.sleep(@cook_speed)
       Osteria.Log.log_line_cook_preparation({table_number, dish}, area)
       Osteria.Waiter.deliver_dish(table_number, dish)
     end)
     {:noreply, [], area}
+  end
+
+  defp update_status(dish_tuples, area) do
+    dish_tuples
+    |> Enum.map(fn({_, dish}) -> dish end)
+    |> Osteria.Status.update_line_cook(area)
   end
 end

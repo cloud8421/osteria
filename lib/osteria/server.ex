@@ -5,7 +5,7 @@ defmodule Osteria.Server do
   plug :dispatch
 
   get "/status" do
-    send_resp(conn, 200, "all good")
+    send_resp(conn, 200, Poison.encode!(Osteria.Status.get))
   end
 
   match _ do

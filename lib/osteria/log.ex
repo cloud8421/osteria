@@ -69,6 +69,6 @@ defmodule Osteria.Log do
   end
 
   defp log(msg) do
-    IO.puts msg
+    # IO.puts msg
   end
 end

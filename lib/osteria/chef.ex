@@ -21,10 +21,11 @@ defmodule Osteria.Chef do
   end
 
   def handle_events(orders, _from, state) do
+    Osteria.Status.update_chef(orders)
     dishes = extract_dishes(orders)
     organize_orders(orders)
 
-    {:noreply, dishes, [orders | state]}
+    {:noreply, dishes, orders}
   end
 
   defp extract_dishes(orders) do
