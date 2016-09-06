@@ -12,6 +12,7 @@ defmodule Osteria do
 
     # Define workers and child supervisors to be supervised
     children = [
+      Plug.Adapters.Cowboy.child_spec(:http, Osteria.Server, [], [port: 4001]),
       worker(Osteria.TableMap, []),
       worker(Osteria.Waiter, []),
       worker(Osteria.Chef, []),
@@ -30,8 +31,5 @@ defmodule Osteria do
             max_seconds: 5,
             name: Osteria.Supervisor]
     Supervisor.start_link(children, opts)
-  end
-
-  defp generate_tables(total) do
   end
 end

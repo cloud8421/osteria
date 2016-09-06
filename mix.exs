@@ -14,7 +14,7 @@ defmodule Osteria.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger],
+    [applications: [:logger, :cowboy, :plug],
      mod: {Osteria, []}]
   end
 
@@ -29,6 +29,7 @@ defmodule Osteria.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [{:exsync, "~> 0.1", only: :dev},
+     {:cowboy, "~> 1.0.0"},
      {:plug, "~> 1.2"},
      {:gen_stage, "~> 0.5.0"}]
   end
