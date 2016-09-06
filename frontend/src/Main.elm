@@ -6,6 +6,8 @@ import Platform.Sub as Sub
 import Time
 import Api
 import Types exposing (..)
+import Html exposing (..)
+import String
 
 
 model : Model
@@ -13,10 +15,30 @@ model =
     Nothing
 
 
+tableItem table =
+    li []
+        [ span [] [ text <| toString <| table.number ]
+        , span [] [ text <| toString <| table.size ]
+        , span [] [ text <| String.join ", " table.dishes ]
+        ]
+
+
+tableList tables =
+    ul []
+        (List.map tableItem tables)
+
+
 view : Model -> Html Msg
 view model =
-    div []
-        [ model |> toString |> text ]
+    case model of
+        Just status ->
+            section []
+                [ h1 [] [ text "Osteria" ]
+                , tableList status.tables
+                ]
+
+        Nothing ->
+            p [] [ text "Wait for it..." ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
