@@ -9140,9 +9140,9 @@ var _evancz$elm_http$Http$post = F3(
 			A2(_evancz$elm_http$Http$send, _evancz$elm_http$Http$defaultSettings, request));
 	});
 
-var _user$project$Types$Table = F3(
-	function (a, b, c) {
-		return {size: a, number: b, dishes: c};
+var _user$project$Types$Table = F4(
+	function (a, b, c, d) {
+		return {phase: a, size: b, number: c, dishes: d};
 	});
 var _user$project$Types$LineCook = F2(
 	function (a, b) {
@@ -9162,9 +9162,10 @@ var _user$project$Types$SocketMsg = function (a) {
 var _user$project$Types$Tick = {ctor: 'Tick'};
 var _user$project$Types$NoOp = {ctor: 'NoOp'};
 
-var _user$project$Data$tableDecoder = A4(
-	_elm_lang$core$Json_Decode$object3,
+var _user$project$Data$tableDecoder = A5(
+	_elm_lang$core$Json_Decode$object4,
 	_user$project$Types$Table,
+	A2(_elm_lang$core$Json_Decode_ops[':='], 'phase', _elm_lang$core$Json_Decode$string),
 	A2(_elm_lang$core$Json_Decode_ops[':='], 'size', _elm_lang$core$Json_Decode$int),
 	A2(_elm_lang$core$Json_Decode_ops[':='], 'number', _elm_lang$core$Json_Decode$int),
 	A2(
@@ -9252,7 +9253,9 @@ var _user$project$Main$chefStatus = function (chef) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
-			[]),
+			[
+				_elm_lang$html$Html_Attributes$class('chef')
+			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
@@ -9296,6 +9299,17 @@ var _user$project$Main$chefStatus = function (chef) {
 					]))
 			]));
 };
+var _user$project$Main$phaseIndicator = function (phase) {
+	var _p2 = phase;
+	switch (_p2) {
+		case 'waiting':
+			return '⌛️';
+		case 'deciding':
+			return '💬';
+		default:
+			return 'doh';
+	}
+};
 var _user$project$Main$dishIndicator = function (dishes) {
 	return A2(
 		_elm_lang$core$String$repeat,
@@ -9313,7 +9327,18 @@ var _user$project$Main$tableItem = function (tb) {
 				_elm_lang$html$Html$td,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html_Attributes$class('number')
+						_elm_lang$html$Html_Attributes$class('phase narrow')
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(
+						_user$project$Main$phaseIndicator(tb.phase))
+					])),
+				A2(
+				_elm_lang$html$Html$td,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('number narrow')
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
@@ -9324,7 +9349,7 @@ var _user$project$Main$tableItem = function (tb) {
 				_elm_lang$html$Html$td,
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html_Attributes$class('size')
+						_elm_lang$html$Html_Attributes$class('size narrow')
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
@@ -9352,7 +9377,9 @@ var _user$project$Main$tableList = function (tables) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
-			[]),
+			[
+				_elm_lang$html$Html_Attributes$class('tables')
+			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
@@ -9378,7 +9405,19 @@ var _user$project$Main$tableList = function (tables) {
 								A2(
 								_elm_lang$html$Html$th,
 								_elm_lang$core$Native_List.fromArray(
-									[]),
+									[
+										_elm_lang$html$Html_Attributes$class('narrow')
+									]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text('phase')
+									])),
+								A2(
+								_elm_lang$html$Html$th,
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html_Attributes$class('narrow')
+									]),
 								_elm_lang$core$Native_List.fromArray(
 									[
 										_elm_lang$html$Html$text('number')
@@ -9386,7 +9425,9 @@ var _user$project$Main$tableList = function (tables) {
 								A2(
 								_elm_lang$html$Html$th,
 								_elm_lang$core$Native_List.fromArray(
-									[]),
+									[
+										_elm_lang$html$Html_Attributes$class('narrow')
+									]),
 								_elm_lang$core$Native_List.fromArray(
 									[
 										_elm_lang$html$Html$text('people')
@@ -9438,7 +9479,9 @@ var _user$project$Main$lineCookList = function (lineCooks) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
-			[]),
+			[
+				_elm_lang$html$Html_Attributes$class('line-cooks')
+			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
@@ -9487,9 +9530,9 @@ var _user$project$Main$lineCookList = function (lineCooks) {
 			]));
 };
 var _user$project$Main$view = function (model) {
-	var _p2 = model;
-	if (_p2.ctor === 'Just') {
-		var _p3 = _p2._0;
+	var _p3 = model;
+	if (_p3.ctor === 'Just') {
+		var _p4 = _p3._0;
 		return A2(
 			_elm_lang$html$Html$div,
 			_elm_lang$core$Native_List.fromArray(
@@ -9510,9 +9553,9 @@ var _user$project$Main$view = function (model) {
 						[]),
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_user$project$Main$tableList(_p3.tables),
-							_user$project$Main$chefStatus(_p3.chef),
-							_user$project$Main$lineCookList(_p3.line_cooks)
+							_user$project$Main$tableList(_p4.tables),
+							_user$project$Main$chefStatus(_p4.chef),
+							_user$project$Main$lineCookList(_p4.line_cooks)
 						]))
 				]));
 	} else {

@@ -185,8 +185,13 @@ hr {
 main {
   display: flex; }
   main div {
-    width: 32.33333%;
     margin: 0 0.5% 0 0.5%; }
+  main .chef, main .line-cooks {
+    width: 30%; }
+  main .tables {
+    width: 40%; }
+  main .narrow {
+    width: 5em; }
 
 h1 {
   text-align: center; }

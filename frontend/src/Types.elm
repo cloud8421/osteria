@@ -14,7 +14,8 @@ type alias Model =
 
 
 type alias Table =
-    { size : Int
+    { phase : String
+    , size : Int
     , number : Int
     , dishes : List String
     }

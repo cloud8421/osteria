@@ -5,6 +5,7 @@ defmodule Osteria.Table do
 
   defstruct number: 0,
             size: 0,
+            phase: :deciding,
             dishes: []
 
   @default_thinking_time_range 1000..10000
@@ -67,7 +68,9 @@ defmodule Osteria.Table do
     case length(dishes) do
       ^size ->
         inform_waiter(number, dishes)
-        {:noreply, state, waiting_time()}
+        new_state = %{state | phase: :waiting}
+        Osteria.Status.update_table(new_state)
+        {:noreply, new_state, waiting_time()}
       _ ->
         schedule_decide()
         new_dish = random_dish()

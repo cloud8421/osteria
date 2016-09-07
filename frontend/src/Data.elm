@@ -20,7 +20,8 @@ lineCookDecoder =
 
 tableDecoder : Decoder Table
 tableDecoder =
-    object3 Table
+    object4 Table
+        ("phase" := string)
         ("size" := int)
         ("number" := int)
         ("dishes" := list string)

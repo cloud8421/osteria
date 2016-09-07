@@ -5,8 +5,19 @@ main {
   display: flex;
 
   div {
-    width: 32.33333%;
     margin: 0 0.5% 0 0.5%;
+  }
+
+  .chef, .line-cooks {
+    width: 30%;
+  }
+
+  .tables {
+    width: 40%;
+  }
+
+  .narrow {
+    width: 5em;
   }
 }
 

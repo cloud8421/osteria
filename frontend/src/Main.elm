@@ -21,11 +21,25 @@ dishIndicator dishes =
     String.repeat (List.length dishes) "🍲"
 
 
+phaseIndicator : String -> String
+phaseIndicator phase =
+    case phase of
+        "waiting" ->
+            "⌛️"
+
+        "deciding" ->
+            "💬"
+
+        otherwise ->
+            "doh"
+
+
 tableItem : Table -> Html Msg
 tableItem tb =
     tr []
-        [ td [ class "number" ] [ text <| toString <| tb.number ]
-        , td [ class "size" ] [ text <| toString <| tb.size ]
+        [ td [ class "phase narrow" ] [ text <| phaseIndicator tb.phase ]
+        , td [ class "number narrow" ] [ text <| toString <| tb.number ]
+        , td [ class "size narrow" ] [ text <| toString <| tb.size ]
         , td [] [ text (dishIndicator tb.dishes) ]
         ]
 
@@ -36,12 +50,13 @@ tableList tables =
         sortedTables =
             List.sortBy .number tables
     in
-        div []
+        div [ class "tables" ]
             [ h2 [] [ text "Tables" ]
             , Html.table []
                 [ thead []
-                    [ th [] [ text "number" ]
-                    , th [] [ text "people" ]
+                    [ th [ class "narrow" ] [ text "phase" ]
+                    , th [ class "narrow" ] [ text "number" ]
+                    , th [ class "narrow" ] [ text "people" ]
                     , th [] [ text "dishes" ]
                     ]
                 , tbody []
@@ -59,7 +74,7 @@ dishItem dish =
 
 chefStatus : Chef -> Html Msg
 chefStatus chef =
-    div []
+    div [ class "chef" ]
         [ h2 [] [ text "Chef" ]
         , Html.table []
             [ thead []
@@ -81,7 +96,7 @@ lineCookItem lineCook =
 
 lineCookList : List LineCook -> Html Msg
 lineCookList lineCooks =
-    div []
+    div [ class "line-cooks" ]
         [ h2 [] [ text "Line Cooks" ]
         , Html.table []
             [ thead []
