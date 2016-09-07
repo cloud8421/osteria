@@ -104,7 +104,7 @@ node_modules/.bin/elm-test:
 .gitignore:
 	echo "$$gitignore" > $@
 
-$(BUILD_FOLDER)/main.css: styles/*.scss
+$(BUILD_FOLDER)/main.css: styles/*.scss styles/**/*.scss
 	bin/wt compile -b $(BUILD_FOLDER)/ styles/main.scss
 
 $(BUILD_FOLDER)/main.js: $(ELM_FILES)

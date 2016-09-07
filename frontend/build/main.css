@@ -7,11 +7,11 @@ button, [type='button'], [type='reset'], [type='submit'] {
   cursor: pointer;
   display: inline-block;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  font-size: 1em;
+  font-size: 0.9em;
   -webkit-font-smoothing: antialiased;
   font-weight: 600;
   line-height: 1;
-  padding: 0.75em 1.5em;
+  padding: 0.6em 1.2em;
   text-align: center;
   text-decoration: none;
   transition: background-color 150ms ease;
@@ -35,20 +35,20 @@ fieldset {
 
 legend {
   font-weight: 600;
-  margin-bottom: 0.375em;
+  margin-bottom: 0.3em;
   padding: 0; }
 
 label {
   display: block;
   font-weight: 600;
-  margin-bottom: 0.375em; }
+  margin-bottom: 0.3em; }
 
 input,
 select,
 textarea {
   display: block;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  font-size: 1em; }
+  font-size: 0.9em; }
 
 [type='color'], [type='date'], [type='datetime'], [type='datetime-local'], [type='email'], [type='month'], [type='number'], [type='password'], [type='search'], [type='tel'], [type='text'], [type='time'], [type='url'], [type='week'], input:not([type]), textarea {
   appearance: none;
@@ -57,8 +57,8 @@ textarea {
   border-radius: 3px;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
   box-sizing: border-box;
-  margin-bottom: 0.75em;
-  padding: 0.5em;
+  margin-bottom: 0.6em;
+  padding: 0.4em;
   transition: border-color 150ms ease;
   width: 100%; }
   [type='color']:hover, [type='date']:hover, [type='datetime']:hover, [type='datetime-local']:hover, [type='email']:hover, [type='month']:hover, [type='number']:hover, [type='password']:hover, [type='search']:hover, [type='tel']:hover, [type='text']:hover, [type='time']:hover, [type='url']:hover, [type='week']:hover, input:not([type]):hover, textarea:hover {
@@ -81,14 +81,14 @@ textarea {
 [type="checkbox"],
 [type="radio"] {
   display: inline;
-  margin-right: 0.375em; }
+  margin-right: 0.3em; }
 
 [type="file"] {
-  margin-bottom: 0.75em;
+  margin-bottom: 0.6em;
   width: 100%; }
 
 select {
-  margin-bottom: 0.75em;
+  margin-bottom: 0.6em;
   width: 100%; }
 
 html {
@@ -129,19 +129,19 @@ picture {
 
 table {
   border-collapse: collapse;
-  margin: 0.75em 0;
+  margin: 0.6em 0;
   table-layout: fixed;
   width: 100%; }
 
 th {
   border-bottom: 1px solid #a6a6a6;
   font-weight: 600;
-  padding: 0.75em 0;
+  padding: 0.6em 0;
   text-align: left; }
 
 td {
   border-bottom: 1px solid #ddd;
-  padding: 0.75em 0; }
+  padding: 0.6em 0; }
 
 tr,
 td,
@@ -151,8 +151,8 @@ th {
 body {
   color: #333;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  font-size: 1em;
-  line-height: 1.5; }
+  font-size: 0.9em;
+  line-height: 1.2; }
 
 h1,
 h2,
@@ -163,10 +163,10 @@ h6 {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   font-size: 1.25em;
   line-height: 1.2;
-  margin: 0 0 0.75em; }
+  margin: 0 0 0.6em; }
 
 p {
-  margin: 0 0 0.75em; }
+  margin: 0 0 0.6em; }
 
 a {
   color: #1565c0;
@@ -180,10 +180,13 @@ hr {
   border-left: 0;
   border-right: 0;
   border-top: 0;
-  margin: 1.5em 0; }
+  margin: 1.2em 0; }
 
 main {
   display: flex; }
   main div {
     width: 32.33333%;
     margin: 0 0.5% 0 0.5%; }
+
+h1 {
+  text-align: center; }
