@@ -2,7 +2,7 @@ module Main exposing (..)
 
 import Data
 import Html exposing (..)
-import Html exposing (div, text, Html)
+import Html.Attributes exposing (..)
 import Html.App as Html
 import Json.Decode exposing (decodeString)
 import Platform.Sub as Sub
@@ -16,51 +16,81 @@ model =
     Nothing
 
 
+dishIndicator : List a -> String
+dishIndicator dishes =
+    String.repeat (List.length dishes) "🍲"
+
+
 tableItem : Table -> Html Msg
-tableItem table =
-    li []
-        [ span [] [ text <| toString <| table.number ]
-        , span [] [ text <| toString <| table.size ]
-        , span [] [ text <| String.join ", " table.dishes ]
+tableItem tb =
+    tr []
+        [ td [ class "number" ] [ text <| toString <| tb.number ]
+        , td [ class "size" ] [ text <| toString <| tb.size ]
+        , td [] [ text (dishIndicator tb.dishes) ]
         ]
 
 
 tableList : List Table -> Html Msg
 tableList tables =
-    div []
-        [ ul []
-            (List.map tableItem tables)
-        ]
+    let
+        sortedTables =
+            List.sortBy .number tables
+    in
+        div []
+            [ h2 [] [ text "Tables" ]
+            , Html.table []
+                [ thead []
+                    [ th [] [ text "number" ]
+                    , th [] [ text "people" ]
+                    , th [] [ text "dishes" ]
+                    ]
+                , tbody []
+                    (List.map tableItem sortedTables)
+                ]
+            ]
 
 
 dishItem : String -> Html Msg
 dishItem dish =
-    li [] [ text dish ]
+    tr []
+        [ td [] [ text dish ]
+        ]
 
 
 chefStatus : Chef -> Html Msg
 chefStatus chef =
     div []
-        [ p []
-            [ text <| toString <| chef.table_number ]
-        , ul []
-            (List.map dishItem chef.dishes)
+        [ h2 [] [ text "Chef" ]
+        , Html.table []
+            [ thead []
+                [ th [] [ text ("dishes for table " ++ (toString chef.table_number)) ]
+                ]
+            , tbody []
+                (List.map dishItem chef.dishes)
+            ]
         ]
 
 
 lineCookItem : LineCook -> Html Msg
 lineCookItem lineCook =
-    li []
-        [ span [] [ text <| lineCook.area ]
-        , span [] [ text <| String.join ", " lineCook.dishes ]
+    tr []
+        [ td [] [ text <| lineCook.area ]
+        , td [] [ text (dishIndicator lineCook.dishes) ]
         ]
 
 
 lineCookList : List LineCook -> Html Msg
 lineCookList lineCooks =
     div []
-        [ ul []
-            (List.map lineCookItem lineCooks)
+        [ h2 [] [ text "Line Cooks" ]
+        , Html.table []
+            [ thead []
+                [ th [] [ text "area" ]
+                , th [] [ text "dishes" ]
+                ]
+            , tbody []
+                (List.map lineCookItem lineCooks)
+            ]
         ]
 
 

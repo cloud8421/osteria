@@ -185,4 +185,5 @@ hr {
 main {
   display: flex; }
   main div {
-    width: 33.33333%; }
+    width: 32.33333%;
+    margin: 0 0.5% 0 0.5%; }
