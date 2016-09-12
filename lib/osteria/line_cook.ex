@@ -2,7 +2,7 @@ defmodule Osteria.LineCook do
   alias Experimental.GenStage
   use GenStage
 
-  @cook_speed 1500
+  @default_cooking_speed 1500
 
   def partition(:pasta), do: 0
   def partition(:stew), do: 1
@@ -35,5 +35,10 @@ defmodule Osteria.LineCook do
     dish_tuples
     |> Enum.map(fn({_, dish}) -> dish end)
     |> Osteria.Status.update_line_cook(area)
+  end
+
+  defp cooking_speed do
+    Application.get_env(:osteria, __MODULE__)
+    |> Keyword.get(:cooking_speed, @default_cooking_speed)
   end
 end

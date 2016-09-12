@@ -9,6 +9,9 @@ config :osteria, Osteria.Table,
 config :osteria, Osteria.Chef,
   organizing_speed: 50
 
+config :osteria, Osteria.LineCook,
+  cooking_speed: 1500
+
 # config :logger, level: :info
 
 # This configuration is loaded before any dependency and is restricted
