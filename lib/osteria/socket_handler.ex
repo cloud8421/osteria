@@ -45,6 +45,7 @@ defmodule Osteria.SocketHandler do
       error_count: status.error_count}
   end
 
+  defp serialize_chef(%{}), do: %{}
   defp serialize_chef([chef_status]) do
     %{table_number: chef_status.table_number,
       orders: Map.get(chef_status, :to_prepare)}
