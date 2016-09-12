@@ -109,12 +109,25 @@ lineCookList lineCooks =
         ]
 
 
+lostTables : Int -> Html Msg
+lostTables errorCount =
+    let
+        msg =
+            "Number of lost tables: " ++ (toString errorCount)
+    in
+        footer []
+            [ p []
+                [ text msg ]
+            ]
+
+
 view : Model -> Html Msg
 view model =
     case model of
         Just status ->
             div []
                 [ h1 [] [ text "Osteria" ]
+                , lostTables status.errorCount
                 , main' []
                     [ tableList status.tables
                     , chefStatus status.chef

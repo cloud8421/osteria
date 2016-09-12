@@ -29,7 +29,8 @@ tableDecoder =
 
 statusDecoder : Decoder Status
 statusDecoder =
-    object3 Status
+    object4 Status
         ("tables" := (list tableDecoder))
         ("line_cooks" := (list lineCookDecoder))
         ("chef" := chefDecoder)
+        ("error_count" := int)

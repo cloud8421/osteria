@@ -3,7 +3,8 @@ defmodule Osteria.Status do
     initial = %{
       tables: %{},
       chef: %{},
-      line_cooks: %{}
+      line_cooks: %{},
+      error_count: 0
     }
     Agent.start_link(fn() -> initial end, name: __MODULE__)
   end
@@ -18,10 +19,16 @@ defmodule Osteria.Status do
     end)
   end
 
-  def delete_table(table_number) do
+  def delete_table(table_number, :normal) do
     Agent.update(__MODULE__, fn(current) ->
       {_el, new_state}= pop_in(current, [:tables, to_string(table_number)])
       new_state
+    end)
+  end
+  def delete_table(table_number, reason) do
+    Agent.update(__MODULE__, fn(current) ->
+      {_el, new_state}= pop_in(current, [:tables, to_string(table_number)])
+      Map.update!(new_state, :error_count, &(&1 + 1))
     end)
   end
 

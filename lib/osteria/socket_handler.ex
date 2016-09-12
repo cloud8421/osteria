@@ -41,7 +41,8 @@ defmodule Osteria.SocketHandler do
   defp serialize_status(status) do
     %{tables: Map.values(status.tables),
       chef: serialize_chef(status.chef),
-      line_cooks: serialize_line_cooks(status.line_cooks)}
+      line_cooks: serialize_line_cooks(status.line_cooks),
+      error_count: status.error_count}
   end
 
   defp serialize_chef([chef_status]) do

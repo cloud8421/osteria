@@ -24,7 +24,7 @@ defmodule Osteria.LineCook do
   def handle_events(dish_tuples, _from, area) do
     update_status(dish_tuples, area)
     Enum.map(dish_tuples, fn({table_number, dish}) ->
-      Process.sleep(@cook_speed)
+      Process.sleep(cooking_speed())
       Osteria.Log.log_line_cook_preparation({table_number, dish}, area)
       Osteria.Waiter.deliver_dish(table_number, dish)
     end)

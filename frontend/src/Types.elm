@@ -1,7 +1,5 @@
 module Types exposing (..)
 
-import Http exposing (Error)
-
 
 type Msg
     = NoOp
@@ -37,4 +35,5 @@ type alias Status =
     { tables : List Table
     , line_cooks : List LineCook
     , chef : Chef
+    , errorCount : Int
     }

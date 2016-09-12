@@ -57,7 +57,6 @@ defmodule Osteria.Table do
 
   def handle_info(:finished_eating, state = %__MODULE__{number: number}) do
     Osteria.Log.log_table_finish(number)
-    Osteria.Status.delete_table(number)
     Process.sleep(2000)
     {:stop, :normal, state}
   end
@@ -83,8 +82,13 @@ defmodule Osteria.Table do
 
   def handle_info(:timeout, state = %__MODULE__{number: number}) do
     Osteria.Log.log_table_leaving(number)
-    Osteria.Status.delete_table(number)
+    Osteria.Status.delete_table(number, :timeout)
     {:stop, :waited_too_long, state}
+  end
+
+  def terminate(reason, state = %__MODULE__{number: number}) do
+    Osteria.Status.delete_table(number, reason)
+    {:stop, reason, state}
   end
 
   defp schedule_decide do
