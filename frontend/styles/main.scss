@@ -8,12 +8,28 @@ main {
     margin: 0 0.5% 0 0.5%;
   }
 
-  .chef, .line-cooks {
-    width: 30%;
+  .chef, .line-cooks, .waiter {
+    width: 20%;
+  }
+
+  .chef {
+    h2 {
+      color: #963334;
+    }
+  }
+
+  .line-cooks {
+    h2 {
+      color: #8BAB42;
+    }
   }
 
   .tables {
-    width: 40%;
+    width: 35%;
+
+    h2 {
+      color: #00b2ff;
+    }
   }
 
   .narrow {

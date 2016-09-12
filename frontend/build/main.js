@@ -8790,13 +8790,13 @@ var _user$project$Types$LineCook = F2(
 	function (a, b) {
 		return {area: a, dishes: b};
 	});
-var _user$project$Types$Chef = F2(
+var _user$project$Types$Order = F2(
 	function (a, b) {
 		return {table_number: a, dishes: b};
 	});
-var _user$project$Types$Status = F4(
-	function (a, b, c, d) {
-		return {tables: a, line_cooks: b, chef: c, errorCount: d};
+var _user$project$Types$Status = F5(
+	function (a, b, c, d, e) {
+		return {tables: a, waiterQueue: b, line_cooks: c, chefOrders: d, errorCount: e};
 	});
 var _user$project$Types$SocketMsg = function (a) {
 	return {ctor: 'SocketMsg', _0: a};
@@ -8822,26 +8822,30 @@ var _user$project$Data$lineCookDecoder = A3(
 		_elm_lang$core$Json_Decode_ops[':='],
 		'dishes',
 		_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string)));
-var _user$project$Data$chefDecoder = A3(
+var _user$project$Data$orderDecoder = A3(
 	_elm_lang$core$Json_Decode$object2,
-	_user$project$Types$Chef,
+	_user$project$Types$Order,
 	A2(_elm_lang$core$Json_Decode_ops[':='], 'table_number', _elm_lang$core$Json_Decode$int),
 	A2(
 		_elm_lang$core$Json_Decode_ops[':='],
 		'orders',
 		_elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string)));
-var _user$project$Data$statusDecoder = A5(
-	_elm_lang$core$Json_Decode$object4,
+var _user$project$Data$statusDecoder = A6(
+	_elm_lang$core$Json_Decode$object5,
 	_user$project$Types$Status,
 	A2(
 		_elm_lang$core$Json_Decode_ops[':='],
 		'tables',
 		_elm_lang$core$Json_Decode$list(_user$project$Data$tableDecoder)),
+	A2(_elm_lang$core$Json_Decode_ops[':='], 'waiter_queue', _elm_lang$core$Json_Decode$int),
 	A2(
 		_elm_lang$core$Json_Decode_ops[':='],
 		'line_cooks',
 		_elm_lang$core$Json_Decode$list(_user$project$Data$lineCookDecoder)),
-	A2(_elm_lang$core$Json_Decode_ops[':='], 'chef', _user$project$Data$chefDecoder),
+	A2(
+		_elm_lang$core$Json_Decode_ops[':='],
+		'chef',
+		_elm_lang$core$Json_Decode$list(_user$project$Data$orderDecoder)),
 	A2(_elm_lang$core$Json_Decode_ops[':='], 'error_count', _elm_lang$core$Json_Decode$int));
 
 var _user$project$Main$wsServer = 'ws://localhost:4001/ws';
@@ -8913,7 +8917,47 @@ var _user$project$Main$dishItem = function (dish) {
 					]))
 			]));
 };
-var _user$project$Main$chefStatus = function (chef) {
+var _user$project$Main$orderStatus = function (chefOrder) {
+	return A2(
+		_elm_lang$html$Html$table,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$thead,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$tr,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html$th,
+								_elm_lang$core$Native_List.fromArray(
+									[]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_elm_lang$html$Html$text(
+										A2(
+											_elm_lang$core$Basics_ops['++'],
+											'dishes for table ',
+											_elm_lang$core$Basics$toString(chefOrder.table_number)))
+									]))
+							]))
+					])),
+				A2(
+				_elm_lang$html$Html$tbody,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				A2(_elm_lang$core$List$map, _user$project$Main$dishItem, chefOrder.dishes))
+			]));
+};
+var _user$project$Main$chefStatus = function (chefOrders) {
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
@@ -8931,6 +8975,30 @@ var _user$project$Main$chefStatus = function (chef) {
 						_elm_lang$html$Html$text('Chef')
 					])),
 				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				A2(_elm_lang$core$List$map, _user$project$Main$orderStatus, chefOrders))
+			]));
+};
+var _user$project$Main$waiterStatus = function (queueCount) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('waiter')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$h2,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('Waiter')
+					])),
+				A2(
 				_elm_lang$html$Html$table,
 				_elm_lang$core$Native_List.fromArray(
 					[]),
@@ -8943,23 +9011,48 @@ var _user$project$Main$chefStatus = function (chef) {
 						_elm_lang$core$Native_List.fromArray(
 							[
 								A2(
-								_elm_lang$html$Html$th,
+								_elm_lang$html$Html$tr,
 								_elm_lang$core$Native_List.fromArray(
 									[]),
 								_elm_lang$core$Native_List.fromArray(
 									[
-										_elm_lang$html$Html$text(
 										A2(
-											_elm_lang$core$Basics_ops['++'],
-											'dishes for table ',
-											_elm_lang$core$Basics$toString(chef.table_number)))
+										_elm_lang$html$Html$th,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$class('narrow')
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('orders count')
+											]))
 									]))
 							])),
 						A2(
 						_elm_lang$html$Html$tbody,
 						_elm_lang$core$Native_List.fromArray(
 							[]),
-						A2(_elm_lang$core$List$map, _user$project$Main$dishItem, chef.dishes))
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html$tr,
+								_elm_lang$core$Native_List.fromArray(
+									[]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										A2(
+										_elm_lang$html$Html$td,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$class('narrow')
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text(
+												_elm_lang$core$Basics$toString(queueCount))
+											]))
+									]))
+							]))
 					]))
 			]));
 };
@@ -9067,42 +9160,49 @@ var _user$project$Main$tableList = function (tables) {
 						_elm_lang$core$Native_List.fromArray(
 							[
 								A2(
-								_elm_lang$html$Html$th,
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html_Attributes$class('narrow')
-									]),
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html$text('phase')
-									])),
-								A2(
-								_elm_lang$html$Html$th,
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html_Attributes$class('narrow')
-									]),
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html$text('number')
-									])),
-								A2(
-								_elm_lang$html$Html$th,
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html_Attributes$class('narrow')
-									]),
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html$text('people')
-									])),
-								A2(
-								_elm_lang$html$Html$th,
+								_elm_lang$html$Html$tr,
 								_elm_lang$core$Native_List.fromArray(
 									[]),
 								_elm_lang$core$Native_List.fromArray(
 									[
-										_elm_lang$html$Html$text('dishes')
+										A2(
+										_elm_lang$html$Html$th,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$class('narrow')
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('phase')
+											])),
+										A2(
+										_elm_lang$html$Html$th,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$class('narrow')
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('number')
+											])),
+										A2(
+										_elm_lang$html$Html$th,
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html_Attributes$class('narrow')
+											]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('people')
+											])),
+										A2(
+										_elm_lang$html$Html$th,
+										_elm_lang$core$Native_List.fromArray(
+											[]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('dishes')
+											]))
 									]))
 							])),
 						A2(
@@ -9169,20 +9269,27 @@ var _user$project$Main$lineCookList = function (lineCooks) {
 						_elm_lang$core$Native_List.fromArray(
 							[
 								A2(
-								_elm_lang$html$Html$th,
+								_elm_lang$html$Html$tr,
 								_elm_lang$core$Native_List.fromArray(
 									[]),
 								_elm_lang$core$Native_List.fromArray(
 									[
-										_elm_lang$html$Html$text('area')
-									])),
-								A2(
-								_elm_lang$html$Html$th,
-								_elm_lang$core$Native_List.fromArray(
-									[]),
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html$text('dishes')
+										A2(
+										_elm_lang$html$Html$th,
+										_elm_lang$core$Native_List.fromArray(
+											[]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('area')
+											])),
+										A2(
+										_elm_lang$html$Html$th,
+										_elm_lang$core$Native_List.fromArray(
+											[]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('dishes')
+											]))
 									]))
 							])),
 						A2(
@@ -9219,7 +9326,8 @@ var _user$project$Main$view = function (model) {
 					_elm_lang$core$Native_List.fromArray(
 						[
 							_user$project$Main$tableList(_p4.tables),
-							_user$project$Main$chefStatus(_p4.chef),
+							_user$project$Main$waiterStatus(_p4.waiterQueue),
+							_user$project$Main$chefStatus(_p4.chefOrders),
 							_user$project$Main$lineCookList(_p4.line_cooks)
 						]))
 				]));

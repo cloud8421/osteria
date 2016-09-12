@@ -186,10 +186,16 @@ main {
   display: flex; }
   main div {
     margin: 0 0.5% 0 0.5%; }
-  main .chef, main .line-cooks {
-    width: 30%; }
+  main .chef, main .line-cooks, main .waiter {
+    width: 20%; }
+  main .chef h2 {
+    color: #963334; }
+  main .line-cooks h2 {
+    color: #8BAB42; }
   main .tables {
-    width: 40%; }
+    width: 35%; }
+    main .tables h2 {
+      color: #00b2ff; }
   main .narrow {
     width: 5em; }
 

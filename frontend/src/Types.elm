@@ -25,7 +25,7 @@ type alias LineCook =
     }
 
 
-type alias Chef =
+type alias Order =
     { table_number : Int
     , dishes : List String
     }
@@ -33,7 +33,8 @@ type alias Chef =
 
 type alias Status =
     { tables : List Table
+    , waiterQueue : Int
     , line_cooks : List LineCook
-    , chef : Chef
+    , chefOrders : List Order
     , errorCount : Int
     }

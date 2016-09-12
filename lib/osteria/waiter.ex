@@ -43,6 +43,7 @@ defmodule Osteria.Waiter do
          {item, queue} = :queue.out(queue),
          {:value, {from, order}} <- item do
       GenStage.reply(from, :ok)
+      queue |> :queue.len |> Osteria.Status.update_waiter
       Osteria.Log.log_table_order(order.table_number, order.to_prepare)
       dispatch_orders(queue, demand - 1, [order | orders])
     else

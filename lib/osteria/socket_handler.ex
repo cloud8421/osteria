@@ -40,15 +40,17 @@ defmodule Osteria.SocketHandler do
 
   defp serialize_status(status) do
     %{tables: Map.values(status.tables),
+      waiter_queue: status.waiter_queue,
       chef: serialize_chef(status.chef),
       line_cooks: serialize_line_cooks(status.line_cooks),
       error_count: status.error_count}
   end
 
-  defp serialize_chef(%{}), do: %{}
-  defp serialize_chef([chef_status]) do
-    %{table_number: chef_status.table_number,
-      orders: Map.get(chef_status, :to_prepare)}
+  defp serialize_chef(chef_orders) do
+    Enum.map(chef_orders, fn(chef_order) ->
+      %{table_number: chef_order.table_number,
+       orders: Map.get(chef_order, :to_prepare)}
+    end)
   end
 
   defp serialize_line_cooks(line_cooks) do

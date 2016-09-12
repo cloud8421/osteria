@@ -4,9 +4,9 @@ import Json.Decode exposing (..)
 import Types exposing (..)
 
 
-chefDecoder : Decoder Chef
-chefDecoder =
-    object2 Chef
+orderDecoder : Decoder Types.Order
+orderDecoder =
+    object2 Order
         ("table_number" := int)
         ("orders" := list string)
 
@@ -29,8 +29,9 @@ tableDecoder =
 
 statusDecoder : Decoder Status
 statusDecoder =
-    object4 Status
+    object5 Status
         ("tables" := (list tableDecoder))
+        ("waiter_queue" := int)
         ("line_cooks" := (list lineCookDecoder))
-        ("chef" := chefDecoder)
+        ("chef" := (list orderDecoder))
         ("error_count" := int)

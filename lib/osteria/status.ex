@@ -2,7 +2,8 @@ defmodule Osteria.Status do
   def start_link do
     initial = %{
       tables: %{},
-      chef: %{},
+      waiter_queue: 0,
+      chef: [],
       line_cooks: %{},
       error_count: 0
     }
@@ -29,6 +30,12 @@ defmodule Osteria.Status do
     Agent.update(__MODULE__, fn(current) ->
       {_el, new_state}= pop_in(current, [:tables, to_string(table_number)])
       Map.update!(new_state, :error_count, &(&1 + 1))
+    end)
+  end
+
+  def update_waiter(queue_length) do
+    Agent.update(__MODULE__, fn(current) ->
+      Map.put(current, :waiter_queue, queue_length)
     end)
   end
 

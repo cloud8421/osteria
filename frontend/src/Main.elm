@@ -54,15 +54,37 @@ tableList tables =
             [ h2 [] [ text "Tables" ]
             , Html.table []
                 [ thead []
-                    [ th [ class "narrow" ] [ text "phase" ]
-                    , th [ class "narrow" ] [ text "number" ]
-                    , th [ class "narrow" ] [ text "people" ]
-                    , th [] [ text "dishes" ]
+                    [ tr []
+                        [ th [ class "narrow" ] [ text "phase" ]
+                        , th [ class "narrow" ] [ text "number" ]
+                        , th [ class "narrow" ] [ text "people" ]
+                        , th [] [ text "dishes" ]
+                        ]
                     ]
                 , tbody []
                     (List.map tableItem sortedTables)
                 ]
             ]
+
+
+waiterStatus : Int -> Html Msg
+waiterStatus queueCount =
+    div [ class "waiter" ]
+        [ h2 []
+            [ text "Waiter" ]
+        , Html.table []
+            [ thead []
+                [ tr []
+                    [ th [ class "narrow" ] [ text "orders count" ]
+                    ]
+                ]
+            , tbody []
+                [ tr []
+                    [ td [ class "narrow" ] [ text <| toString <| queueCount ]
+                    ]
+                ]
+            ]
+        ]
 
 
 dishItem : String -> Html Msg
@@ -72,17 +94,25 @@ dishItem dish =
         ]
 
 
-chefStatus : Chef -> Html Msg
-chefStatus chef =
+orderStatus : Types.Order -> Html Msg
+orderStatus chefOrder =
+    Html.table []
+        [ thead []
+            [ tr []
+                [ th [] [ text ("dishes for table " ++ (toString chefOrder.table_number)) ]
+                ]
+            ]
+        , tbody []
+            (List.map dishItem chefOrder.dishes)
+        ]
+
+
+chefStatus : List Types.Order -> Html Msg
+chefStatus chefOrders =
     div [ class "chef" ]
         [ h2 [] [ text "Chef" ]
-        , Html.table []
-            [ thead []
-                [ th [] [ text ("dishes for table " ++ (toString chef.table_number)) ]
-                ]
-            , tbody []
-                (List.map dishItem chef.dishes)
-            ]
+        , div []
+            (List.map orderStatus chefOrders)
         ]
 
 
@@ -100,8 +130,10 @@ lineCookList lineCooks =
         [ h2 [] [ text "Line Cooks" ]
         , Html.table []
             [ thead []
-                [ th [] [ text "area" ]
-                , th [] [ text "dishes" ]
+                [ tr []
+                    [ th [] [ text "area" ]
+                    , th [] [ text "dishes" ]
+                    ]
                 ]
             , tbody []
                 (List.map lineCookItem lineCooks)
@@ -130,7 +162,8 @@ view model =
                 , lostTables status.errorCount
                 , main' []
                     [ tableList status.tables
-                    , chefStatus status.chef
+                    , waiterStatus status.waiterQueue
+                    , chefStatus status.chefOrders
                     , lineCookList status.line_cooks
                     ]
                 ]
