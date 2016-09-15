@@ -1,6 +1,15 @@
 @import "bourbon/_bourbon";
 @import "base/_base";
 
+nav {
+  display: flex;
+  justify-content: center;
+
+  button {
+    margin: 1em;
+  }
+}
+
 main {
   display: flex;
 
@@ -38,6 +47,7 @@ main {
 }
 
 h1 {
+  font-size: 1.5em;
   text-align: center;
 }
 

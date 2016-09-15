@@ -3,6 +3,7 @@ module Main exposing (..)
 import Data
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (onClick)
 import Html.App as Html
 import Json.Decode exposing (decodeString)
 import Platform.Sub as Sub
@@ -153,12 +154,27 @@ lostTables errorCount =
             ]
 
 
+configBar : Html Msg
+configBar =
+    nav []
+        [ button [ onClick (Config SlowLineCook) ]
+            [ text "Slow line cooks" ]
+        , button [ onClick (Config FastLineCook) ]
+            [ text "Fast line cooks" ]
+        , button [ onClick (Config SlowChef) ]
+            [ text "Slow chef" ]
+        , button [ onClick (Config FastChef) ]
+            [ text "Fast chef" ]
+        ]
+
+
 view : Model -> Html Msg
 view model =
     case model of
         Just status ->
             div []
                 [ h1 [] [ text "Osteria" ]
+                , configBar
                 , lostTables status.errorCount
                 , main' []
                     [ tableList status.tables
@@ -178,9 +194,6 @@ update msg model =
         NoOp ->
             ( model, Cmd.none )
 
-        Tick ->
-            ( model, getStatus )
-
         SocketMsg msg ->
             case (decodeString Data.statusDecoder msg) of
                 Ok status ->
@@ -189,15 +202,18 @@ update msg model =
                 otherwise ->
                     ( model, Cmd.none )
 
+        Config option ->
+            ( model, updateConfig option )
+
 
 wsServer : String
 wsServer =
     "ws://localhost:4001/ws"
 
 
-getStatus : Cmd a
-getStatus =
-    WebSocket.send wsServer "get-status"
+updateConfig : Option -> Cmd a
+updateConfig option =
+    WebSocket.send wsServer (Data.encodeOption option)
 
 
 subscriptions : Model -> Sub Msg

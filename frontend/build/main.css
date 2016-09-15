@@ -182,6 +182,12 @@ hr {
   border-top: 0;
   margin: 1.2em 0; }
 
+nav {
+  display: flex;
+  justify-content: center; }
+  nav button {
+    margin: 1em; }
+
 main {
   display: flex; }
   main div {
@@ -200,6 +206,7 @@ main {
     width: 5em; }
 
 h1 {
+  font-size: 1.5em;
   text-align: center; }
 
 footer {

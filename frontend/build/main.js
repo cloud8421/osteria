@@ -8249,6 +8249,107 @@ var _elm_lang$html$Html_Attributes$classList = function (list) {
 };
 var _elm_lang$html$Html_Attributes$style = _elm_lang$virtual_dom$VirtualDom$style;
 
+var _elm_lang$html$Html_Events$keyCode = A2(_elm_lang$core$Json_Decode_ops[':='], 'keyCode', _elm_lang$core$Json_Decode$int);
+var _elm_lang$html$Html_Events$targetChecked = A2(
+	_elm_lang$core$Json_Decode$at,
+	_elm_lang$core$Native_List.fromArray(
+		['target', 'checked']),
+	_elm_lang$core$Json_Decode$bool);
+var _elm_lang$html$Html_Events$targetValue = A2(
+	_elm_lang$core$Json_Decode$at,
+	_elm_lang$core$Native_List.fromArray(
+		['target', 'value']),
+	_elm_lang$core$Json_Decode$string);
+var _elm_lang$html$Html_Events$defaultOptions = _elm_lang$virtual_dom$VirtualDom$defaultOptions;
+var _elm_lang$html$Html_Events$onWithOptions = _elm_lang$virtual_dom$VirtualDom$onWithOptions;
+var _elm_lang$html$Html_Events$on = _elm_lang$virtual_dom$VirtualDom$on;
+var _elm_lang$html$Html_Events$onFocus = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'focus',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onBlur = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'blur',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onSubmitOptions = _elm_lang$core$Native_Utils.update(
+	_elm_lang$html$Html_Events$defaultOptions,
+	{preventDefault: true});
+var _elm_lang$html$Html_Events$onSubmit = function (msg) {
+	return A3(
+		_elm_lang$html$Html_Events$onWithOptions,
+		'submit',
+		_elm_lang$html$Html_Events$onSubmitOptions,
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onCheck = function (tagger) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'change',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetChecked));
+};
+var _elm_lang$html$Html_Events$onInput = function (tagger) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'input',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetValue));
+};
+var _elm_lang$html$Html_Events$onMouseOut = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseout',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseOver = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseover',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseLeave = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseleave',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseEnter = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseenter',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseUp = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseup',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseDown = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mousedown',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onDoubleClick = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'dblclick',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onClick = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'click',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$Options = F2(
+	function (a, b) {
+		return {stopPropagation: a, preventDefault: b};
+	});
+
 var _elm_lang$websocket$Native_WebSocket = function() {
 
 function open(url, settings)
@@ -8798,12 +8899,31 @@ var _user$project$Types$Status = F5(
 	function (a, b, c, d, e) {
 		return {tables: a, waiterQueue: b, line_cooks: c, chefOrders: d, errorCount: e};
 	});
+var _user$project$Types$FastChef = {ctor: 'FastChef'};
+var _user$project$Types$SlowChef = {ctor: 'SlowChef'};
+var _user$project$Types$FastLineCook = {ctor: 'FastLineCook'};
+var _user$project$Types$SlowLineCook = {ctor: 'SlowLineCook'};
+var _user$project$Types$Config = function (a) {
+	return {ctor: 'Config', _0: a};
+};
 var _user$project$Types$SocketMsg = function (a) {
 	return {ctor: 'SocketMsg', _0: a};
 };
-var _user$project$Types$Tick = {ctor: 'Tick'};
 var _user$project$Types$NoOp = {ctor: 'NoOp'};
 
+var _user$project$Data$encodeOption = function (option) {
+	var _p0 = option;
+	switch (_p0.ctor) {
+		case 'SlowLineCook':
+			return 'slow-line-cook';
+		case 'FastLineCook':
+			return 'fast-line-cook';
+		case 'SlowChef':
+			return 'slow-chef';
+		default:
+			return 'fast-chef';
+	}
+};
 var _user$project$Data$tableDecoder = A5(
 	_elm_lang$core$Json_Decode$object4,
 	_user$project$Types$Table,
@@ -8849,7 +8969,12 @@ var _user$project$Data$statusDecoder = A6(
 	A2(_elm_lang$core$Json_Decode_ops[':='], 'error_count', _elm_lang$core$Json_Decode$int));
 
 var _user$project$Main$wsServer = 'ws://localhost:4001/ws';
-var _user$project$Main$getStatus = A2(_elm_lang$websocket$WebSocket$send, _user$project$Main$wsServer, 'get-status');
+var _user$project$Main$updateConfig = function (option) {
+	return A2(
+		_elm_lang$websocket$WebSocket$send,
+		_user$project$Main$wsServer,
+		_user$project$Data$encodeOption(option));
+};
 var _user$project$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$batch(
 		_elm_lang$core$Native_List.fromArray(
@@ -8864,9 +8989,7 @@ var _user$project$Main$update = F2(
 		switch (_p0.ctor) {
 			case 'NoOp':
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-			case 'Tick':
-				return {ctor: '_Tuple2', _0: model, _1: _user$project$Main$getStatus};
-			default:
+			case 'SocketMsg':
 				var _p1 = A2(_elm_lang$core$Json_Decode$decodeString, _user$project$Data$statusDecoder, _p0._0);
 				if (_p1.ctor === 'Ok') {
 					return {
@@ -8877,8 +9000,65 @@ var _user$project$Main$update = F2(
 				} else {
 					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 				}
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: _user$project$Main$updateConfig(_p0._0)
+				};
 		}
 	});
+var _user$project$Main$configBar = A2(
+	_elm_lang$html$Html$nav,
+	_elm_lang$core$Native_List.fromArray(
+		[]),
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A2(
+			_elm_lang$html$Html$button,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Events$onClick(
+					_user$project$Types$Config(_user$project$Types$SlowLineCook))
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('Slow line cooks')
+				])),
+			A2(
+			_elm_lang$html$Html$button,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Events$onClick(
+					_user$project$Types$Config(_user$project$Types$FastLineCook))
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('Fast line cooks')
+				])),
+			A2(
+			_elm_lang$html$Html$button,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Events$onClick(
+					_user$project$Types$Config(_user$project$Types$SlowChef))
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('Slow chef')
+				])),
+			A2(
+			_elm_lang$html$Html$button,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Events$onClick(
+					_user$project$Types$Config(_user$project$Types$FastChef))
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('Fast chef')
+				]))
+		]));
 var _user$project$Main$lostTables = function (errorCount) {
 	var msg = A2(
 		_elm_lang$core$Basics_ops['++'],
@@ -9318,6 +9498,7 @@ var _user$project$Main$view = function (model) {
 						[
 							_elm_lang$html$Html$text('Osteria')
 						])),
+					_user$project$Main$configBar,
 					_user$project$Main$lostTables(_p4.errorCount),
 					A2(
 					_elm_lang$html$Html$main$,

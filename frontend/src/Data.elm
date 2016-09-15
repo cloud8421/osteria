@@ -35,3 +35,19 @@ statusDecoder =
         ("line_cooks" := (list lineCookDecoder))
         ("chef" := (list orderDecoder))
         ("error_count" := int)
+
+
+encodeOption : Option -> String
+encodeOption option =
+    case option of
+        SlowLineCook ->
+            "slow-line-cook"
+
+        FastLineCook ->
+            "fast-line-cook"
+
+        SlowChef ->
+            "slow-chef"
+
+        FastChef ->
+            "fast-chef"

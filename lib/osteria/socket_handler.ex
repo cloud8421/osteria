@@ -16,7 +16,8 @@ defmodule Osteria.SocketHandler do
   end
 
   # Handle other messages from the browser - don't reply
-  def websocket_handle({:text, _}, req, state) do
+  def websocket_handle({:text, text}, req, state) do
+    handle_text(text)
     {:ok, req, state}
   end
 
@@ -37,6 +38,20 @@ defmodule Osteria.SocketHandler do
   def websocket_terminate(_reason, _req, _state) do
     :ok
   end
+
+  defp handle_text("slow-line-cook") do
+    Osteria.Config.slow_line_cook
+  end
+  defp handle_text("fast-line-cook") do
+    Osteria.Config.fast_line_cook
+  end
+  defp handle_text("slow-chef") do
+    Osteria.Config.slow_chef
+  end
+  defp handle_text("fast-chef") do
+    Osteria.Config.fast_chef
+  end
+  defp handle_text(_), do: :ok
 
   defp serialize_status(status) do
     %{tables: Map.values(status.tables),

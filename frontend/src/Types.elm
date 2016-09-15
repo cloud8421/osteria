@@ -1,10 +1,17 @@
 module Types exposing (..)
 
 
+type Option
+    = SlowLineCook
+    | FastLineCook
+    | SlowChef
+    | FastChef
+
+
 type Msg
     = NoOp
-    | Tick
     | SocketMsg String
+    | Config Option
 
 
 type alias Model =
