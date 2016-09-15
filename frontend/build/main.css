@@ -182,11 +182,20 @@ hr {
   border-top: 0;
   margin: 1.2em 0; }
 
-nav {
+header {
   display: flex;
-  justify-content: center; }
-  nav button {
-    margin: 1em; }
+  justify-content: space-between;
+  align-items: center;
+  background-color: #e6e6e6;
+  margin-bottom: 0.5em; }
+  header button {
+    margin: 0.5em; }
+  header .lost-tables span {
+    font-size: 0.9em;
+    background-color: red;
+    color: white;
+    padding: 0.4em;
+    margin-right: 0.5em; }
 
 main {
   display: flex; }
@@ -208,8 +217,3 @@ main {
 h1 {
   font-size: 1.5em;
   text-align: center; }
-
-footer {
-  text-align: center; }
-  footer p {
-    color: red; }

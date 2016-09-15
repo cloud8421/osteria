@@ -19,7 +19,30 @@ model =
 
 dishIndicator : List a -> String
 dishIndicator dishes =
-    String.repeat (List.length dishes) "🍲"
+    String.repeat (List.length dishes) "🍽"
+
+
+lineIndicator : List a -> String -> String
+lineIndicator dishes area =
+    let
+        indicator =
+            case area of
+                "stew" ->
+                    "🍲"
+
+                "pasta" ->
+                    "🍝"
+
+                "oven" ->
+                    "🍗"
+
+                "grill" ->
+                    "🍖"
+
+                otherwise ->
+                    "NA"
+    in
+        String.repeat (List.length dishes) indicator
 
 
 phaseIndicator : String -> String
@@ -121,7 +144,7 @@ lineCookItem : LineCook -> Html Msg
 lineCookItem lineCook =
     tr []
         [ td [] [ text <| lineCook.area ]
-        , td [] [ text (dishIndicator lineCook.dishes) ]
+        , td [] [ text (lineIndicator lineCook.dishes lineCook.area) ]
         ]
 
 
@@ -146,10 +169,10 @@ lostTables : Int -> Html Msg
 lostTables errorCount =
     let
         msg =
-            "Number of lost tables: " ++ (toString errorCount)
+            "Tables lost: " ++ (toString errorCount)
     in
-        footer []
-            [ p []
+        div [ class "lost-tables" ]
+            [ span []
                 [ text msg ]
             ]
 
@@ -174,8 +197,10 @@ view model =
         Just status ->
             div []
                 [ h1 [] [ text "Osteria" ]
-                , configBar
-                , lostTables status.errorCount
+                , header []
+                    [ configBar
+                    , lostTables status.errorCount
+                    ]
                 , main' []
                     [ tableList status.tables
                     , waiterStatus status.waiterQueue

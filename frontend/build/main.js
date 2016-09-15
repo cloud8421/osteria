@@ -9062,16 +9062,18 @@ var _user$project$Main$configBar = A2(
 var _user$project$Main$lostTables = function (errorCount) {
 	var msg = A2(
 		_elm_lang$core$Basics_ops['++'],
-		'Number of lost tables: ',
+		'Tables lost: ',
 		_elm_lang$core$Basics$toString(errorCount));
 	return A2(
-		_elm_lang$html$Html$footer,
+		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
-			[]),
+			[
+				_elm_lang$html$Html_Attributes$class('lost-tables')
+			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
 				A2(
-				_elm_lang$html$Html$p,
+				_elm_lang$html$Html$span,
 				_elm_lang$core$Native_List.fromArray(
 					[]),
 				_elm_lang$core$Native_List.fromArray(
@@ -9247,11 +9249,120 @@ var _user$project$Main$phaseIndicator = function (phase) {
 			return 'doh';
 	}
 };
+var _user$project$Main$lineIndicator = F2(
+	function (dishes, area) {
+		var indicator = function () {
+			var _p3 = area;
+			switch (_p3) {
+				case 'stew':
+					return '🍲';
+				case 'pasta':
+					return '🍝';
+				case 'oven':
+					return '🍗';
+				case 'grill':
+					return '🍖';
+				default:
+					return 'NA';
+			}
+		}();
+		return A2(
+			_elm_lang$core$String$repeat,
+			_elm_lang$core$List$length(dishes),
+			indicator);
+	});
+var _user$project$Main$lineCookItem = function (lineCook) {
+	return A2(
+		_elm_lang$html$Html$tr,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$td,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(lineCook.area)
+					])),
+				A2(
+				_elm_lang$html$Html$td,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(
+						A2(_user$project$Main$lineIndicator, lineCook.dishes, lineCook.area))
+					]))
+			]));
+};
+var _user$project$Main$lineCookList = function (lineCooks) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('line-cooks')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$h2,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('Line Cooks')
+					])),
+				A2(
+				_elm_lang$html$Html$table,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_elm_lang$html$Html$thead,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								A2(
+								_elm_lang$html$Html$tr,
+								_elm_lang$core$Native_List.fromArray(
+									[]),
+								_elm_lang$core$Native_List.fromArray(
+									[
+										A2(
+										_elm_lang$html$Html$th,
+										_elm_lang$core$Native_List.fromArray(
+											[]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('area')
+											])),
+										A2(
+										_elm_lang$html$Html$th,
+										_elm_lang$core$Native_List.fromArray(
+											[]),
+										_elm_lang$core$Native_List.fromArray(
+											[
+												_elm_lang$html$Html$text('dishes')
+											]))
+									]))
+							])),
+						A2(
+						_elm_lang$html$Html$tbody,
+						_elm_lang$core$Native_List.fromArray(
+							[]),
+						A2(_elm_lang$core$List$map, _user$project$Main$lineCookItem, lineCooks))
+					]))
+			]));
+};
 var _user$project$Main$dishIndicator = function (dishes) {
 	return A2(
 		_elm_lang$core$String$repeat,
 		_elm_lang$core$List$length(dishes),
-		'🍲');
+		'🍽');
 };
 var _user$project$Main$tableItem = function (tb) {
 	return A2(
@@ -9393,97 +9504,10 @@ var _user$project$Main$tableList = function (tables) {
 					]))
 			]));
 };
-var _user$project$Main$lineCookItem = function (lineCook) {
-	return A2(
-		_elm_lang$html$Html$tr,
-		_elm_lang$core$Native_List.fromArray(
-			[]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
-				_elm_lang$html$Html$td,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text(lineCook.area)
-					])),
-				A2(
-				_elm_lang$html$Html$td,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text(
-						_user$project$Main$dishIndicator(lineCook.dishes))
-					]))
-			]));
-};
-var _user$project$Main$lineCookList = function (lineCooks) {
-	return A2(
-		_elm_lang$html$Html$div,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html_Attributes$class('line-cooks')
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				A2(
-				_elm_lang$html$Html$h2,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html$text('Line Cooks')
-					])),
-				A2(
-				_elm_lang$html$Html$table,
-				_elm_lang$core$Native_List.fromArray(
-					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						A2(
-						_elm_lang$html$Html$thead,
-						_elm_lang$core$Native_List.fromArray(
-							[]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								A2(
-								_elm_lang$html$Html$tr,
-								_elm_lang$core$Native_List.fromArray(
-									[]),
-								_elm_lang$core$Native_List.fromArray(
-									[
-										A2(
-										_elm_lang$html$Html$th,
-										_elm_lang$core$Native_List.fromArray(
-											[]),
-										_elm_lang$core$Native_List.fromArray(
-											[
-												_elm_lang$html$Html$text('area')
-											])),
-										A2(
-										_elm_lang$html$Html$th,
-										_elm_lang$core$Native_List.fromArray(
-											[]),
-										_elm_lang$core$Native_List.fromArray(
-											[
-												_elm_lang$html$Html$text('dishes')
-											]))
-									]))
-							])),
-						A2(
-						_elm_lang$html$Html$tbody,
-						_elm_lang$core$Native_List.fromArray(
-							[]),
-						A2(_elm_lang$core$List$map, _user$project$Main$lineCookItem, lineCooks))
-					]))
-			]));
-};
 var _user$project$Main$view = function (model) {
-	var _p3 = model;
-	if (_p3.ctor === 'Just') {
-		var _p4 = _p3._0;
+	var _p4 = model;
+	if (_p4.ctor === 'Just') {
+		var _p5 = _p4._0;
 		return A2(
 			_elm_lang$html$Html$div,
 			_elm_lang$core$Native_List.fromArray(
@@ -9498,18 +9522,25 @@ var _user$project$Main$view = function (model) {
 						[
 							_elm_lang$html$Html$text('Osteria')
 						])),
-					_user$project$Main$configBar,
-					_user$project$Main$lostTables(_p4.errorCount),
+					A2(
+					_elm_lang$html$Html$header,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_user$project$Main$configBar,
+							_user$project$Main$lostTables(_p5.errorCount)
+						])),
 					A2(
 					_elm_lang$html$Html$main$,
 					_elm_lang$core$Native_List.fromArray(
 						[]),
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_user$project$Main$tableList(_p4.tables),
-							_user$project$Main$waiterStatus(_p4.waiterQueue),
-							_user$project$Main$chefStatus(_p4.chefOrders),
-							_user$project$Main$lineCookList(_p4.line_cooks)
+							_user$project$Main$tableList(_p5.tables),
+							_user$project$Main$waiterStatus(_p5.waiterQueue),
+							_user$project$Main$chefStatus(_p5.chefOrders),
+							_user$project$Main$lineCookList(_p5.line_cooks)
 						]))
 				]));
 	} else {
