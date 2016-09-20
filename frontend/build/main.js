@@ -9023,7 +9023,7 @@ var _user$project$Main$configBar = A2(
 				]),
 			_elm_lang$core$Native_List.fromArray(
 				[
-					_elm_lang$html$Html$text('Slow line cooks')
+					_elm_lang$html$Html$text('Get line cooks drunk')
 				])),
 			A2(
 			_elm_lang$html$Html$button,
@@ -9034,7 +9034,7 @@ var _user$project$Main$configBar = A2(
 				]),
 			_elm_lang$core$Native_List.fromArray(
 				[
-					_elm_lang$html$Html$text('Fast line cooks')
+					_elm_lang$html$Html$text('Give line cooks an energy drink')
 				])),
 			A2(
 			_elm_lang$html$Html$button,
@@ -9045,7 +9045,7 @@ var _user$project$Main$configBar = A2(
 				]),
 			_elm_lang$core$Native_List.fromArray(
 				[
-					_elm_lang$html$Html$text('Slow chef')
+					_elm_lang$html$Html$text('Chef gets a papercut')
 				])),
 			A2(
 			_elm_lang$html$Html$button,
@@ -9056,7 +9056,7 @@ var _user$project$Main$configBar = A2(
 				]),
 			_elm_lang$core$Native_List.fromArray(
 				[
-					_elm_lang$html$Html$text('Fast chef')
+					_elm_lang$html$Html$text('Chef uses a plaster')
 				]))
 		]));
 var _user$project$Main$lostTables = function (errorCount) {
@@ -9140,11 +9140,19 @@ var _user$project$Main$orderStatus = function (chefOrder) {
 			]));
 };
 var _user$project$Main$chefStatus = function (chefOrders) {
+	var isCritical = _elm_lang$core$Native_Utils.cmp(
+		_elm_lang$core$List$length(chefOrders),
+		1) > 0;
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_lang$html$Html_Attributes$class('chef')
+				_elm_lang$html$Html_Attributes$classList(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						{ctor: '_Tuple2', _0: 'chef', _1: true},
+						{ctor: '_Tuple2', _0: 'critical', _1: isCritical}
+					]))
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
@@ -9164,11 +9172,17 @@ var _user$project$Main$chefStatus = function (chefOrders) {
 			]));
 };
 var _user$project$Main$waiterStatus = function (queueCount) {
+	var isCritical = _elm_lang$core$Native_Utils.cmp(queueCount, 1) > 0;
 	return A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_lang$html$Html_Attributes$class('waiter')
+				_elm_lang$html$Html_Attributes$classList(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						{ctor: '_Tuple2', _0: 'waiter', _1: true},
+						{ctor: '_Tuple2', _0: 'critical', _1: isCritical}
+					]))
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[

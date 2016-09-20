@@ -14,13 +14,15 @@ header {
 
   .lost-tables {
     span {
-      font-size: 0.9em;
-      background-color: red;
-      color: white;
+      color: red;
       padding: 0.4em;
       margin-right: 0.5em;
     }
   }
+}
+
+.critical {
+  background-color: hsla(6, 82%, 38%, 0.15);
 }
 
 main {
@@ -28,6 +30,7 @@ main {
 
   div {
     margin: 0 0.5% 0 0.5%;
+    padding: 0.5%;
   }
 
   .chef, .line-cooks, .waiter {

@@ -93,22 +93,26 @@ tableList tables =
 
 waiterStatus : Int -> Html Msg
 waiterStatus queueCount =
-    div [ class "waiter" ]
-        [ h2 []
-            [ text "Waiter" ]
-        , Html.table []
-            [ thead []
-                [ tr []
-                    [ th [ class "narrow" ] [ text "orders count" ]
+    let
+        isCritical =
+            queueCount > 1
+    in
+        div [ classList [ ( "waiter", True ), ( "critical", isCritical ) ] ]
+            [ h2 []
+                [ text "Waiter" ]
+            , Html.table []
+                [ thead []
+                    [ tr []
+                        [ th [ class "narrow" ] [ text "orders count" ]
+                        ]
                     ]
-                ]
-            , tbody []
-                [ tr []
-                    [ td [ class "narrow" ] [ text <| toString <| queueCount ]
+                , tbody []
+                    [ tr []
+                        [ td [ class "narrow" ] [ text <| toString <| queueCount ]
+                        ]
                     ]
                 ]
             ]
-        ]
 
 
 dishItem : String -> Html Msg
@@ -133,11 +137,15 @@ orderStatus chefOrder =
 
 chefStatus : List Types.Order -> Html Msg
 chefStatus chefOrders =
-    div [ class "chef" ]
-        [ h2 [] [ text "Chef" ]
-        , div []
-            (List.map orderStatus chefOrders)
-        ]
+    let
+        isCritical =
+            (List.length chefOrders) > 1
+    in
+        div [ classList [ ( "chef", True ), ( "critical", isCritical ) ] ]
+            [ h2 [] [ text "Chef" ]
+            , div []
+                (List.map orderStatus chefOrders)
+            ]
 
 
 lineCookItem : LineCook -> Html Msg
@@ -181,13 +189,13 @@ configBar : Html Msg
 configBar =
     nav []
         [ button [ onClick (Config SlowLineCook) ]
-            [ text "Slow line cooks" ]
+            [ text "Get line cooks drunk" ]
         , button [ onClick (Config FastLineCook) ]
-            [ text "Fast line cooks" ]
+            [ text "Give line cooks an energy drink" ]
         , button [ onClick (Config SlowChef) ]
-            [ text "Slow chef" ]
+            [ text "Chef gets a papercut" ]
         , button [ onClick (Config FastChef) ]
-            [ text "Fast chef" ]
+            [ text "Chef uses a plaster" ]
         ]
 
 
