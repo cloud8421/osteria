@@ -32,6 +32,6 @@ defmodule Osteria.Mixfile do
      {:cowboy, "~> 1.0.0"},
      {:poison, "~> 2.2"},
      {:plug, "~> 1.2"},
-     {:gen_stage, "~> 0.5.0"}]
+     {:gen_stage, "~> 0.6.0"}]
   end
 end

@@ -17,7 +17,7 @@ defmodule Osteria.LineCook do
     :ok = GenStage.async_subscribe(self(), to: Osteria.Chef,
                                            min_demand: 3,
                                            max_demand: 5,
-                                           partition: partition(area))
+                                           partition: area)
     {:consumer, area}
   end
 
