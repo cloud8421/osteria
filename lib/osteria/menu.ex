@@ -18,6 +18,11 @@ defmodule Osteria.Menu do
     Enum.map(all(), &(&1.name))
   end
 
+  def types do
+    Enum.map(all(), &(&1.type))
+    |> Enum.uniq
+  end
+
   def find_by_name(name) do
     Enum.find(all(), fn(d) -> d.name == name end)
   end

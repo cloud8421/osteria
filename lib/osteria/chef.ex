@@ -16,8 +16,8 @@ defmodule Osteria.Chef do
                                                max_demand: 5)
     {:producer_consumer, [],
      dispatcher: {GenStage.PartitionDispatcher,
-                  partitions: 4,
-                  hash: &partition/2}}
+                  partitions: Osteria.Menu.types,
+                  hash: &partition/1}}
   end
 
   def handle_events(orders, _from, state) do
@@ -55,7 +55,7 @@ defmodule Osteria.Chef do
     |> Keyword.get(:organizing_speed, @default_organizing_speed)
   end
 
-  defp partition({table_number, dish}, _line_cooks_total) do
-    {{table_number, dish}, Osteria.LineCook.partition(dish.type)}
+  defp partition({table_number, dish}) do
+    {{table_number, dish}, dish.type}
   end
 end
