@@ -15,8 +15,8 @@ defmodule Osteria.Chef do
                                                max_demand: 5)
     {:producer_consumer, [],
      dispatcher: {GenStage.PartitionDispatcher,
-                  partitions: Osteria.Menu.types,
-                  hash: &partition/1}}
+                  partitions: Menu.types,
+                  hash: &hash/1}}
   end
 
   def handle_events(orders, _from, _state) do
@@ -28,10 +28,12 @@ defmodule Osteria.Chef do
   end
 
   defp extract_dishes(orders) do
-    Enum.flat_map(orders, fn(order) ->
-      Enum.map(order.to_prepare, fn(dish_name) ->
-        {order.table_number, Menu.find_by_name(dish_name)}
-      end)
+    Enum.flat_map(orders, &extract_dish/1)
+  end
+
+  defp extract_dish(order) do
+    Enum.map(order.to_prepare, fn(dish_name) ->
+      {order.table_number, Menu.find_by_name(dish_name)}
     end)
   end
 
@@ -54,7 +56,7 @@ defmodule Osteria.Chef do
     |> Keyword.get(:organizing_speed, @default_organizing_speed)
   end
 
-  defp partition({table_number, dish}) do
+  defp hash({table_number, dish}) do
     {{table_number, dish}, dish.type}
   end
 end

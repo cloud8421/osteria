@@ -8,6 +8,8 @@ defmodule Osteria.LineCook do
   def partition(:oven), do: 2
   def partition(:grill), do: 3
 
+  def partitions, do: 0..3
+
   def start_link(area) do
     GenStage.start_link(__MODULE__, area)
   end
