@@ -1,5 +1,4 @@
 defmodule Osteria.Chef do
-  alias Experimental.GenStage
   use GenStage
 
   alias Osteria.Menu
@@ -20,7 +19,7 @@ defmodule Osteria.Chef do
                   hash: &partition/1}}
   end
 
-  def handle_events(orders, _from, state) do
+  def handle_events(orders, _from, _state) do
     Osteria.Status.update_chef(orders)
     dishes = extract_dishes(orders)
     organize_orders(orders)

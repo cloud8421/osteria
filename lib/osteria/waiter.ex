@@ -1,5 +1,4 @@
 defmodule Osteria.Waiter do
-  alias Experimental.GenStage
   alias Osteria.Order
 
   require Logger

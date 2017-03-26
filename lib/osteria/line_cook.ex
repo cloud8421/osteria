@@ -1,5 +1,4 @@
 defmodule Osteria.LineCook do
-  alias Experimental.GenStage
   use GenStage
 
   @default_cooking_speed 1500
