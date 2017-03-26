@@ -4,7 +4,7 @@ defmodule Osteria.Mixfile do
   def project do
     [app: :osteria,
      version: "0.1.0",
-     elixir: "~> 1.3",
+     elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps()]
@@ -14,8 +14,8 @@ defmodule Osteria.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :cowboy, :plug],
-     mod: {Osteria, []}]
+    [extra_applications: [:logger],
+     mod: {Osteria.Application, []}]
   end
 
   # Dependencies can be Hex packages:
