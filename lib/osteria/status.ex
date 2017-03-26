@@ -26,7 +26,7 @@ defmodule Osteria.Status do
       new_state
     end)
   end
-  def delete_table(table_number, reason) do
+  def delete_table(table_number, _reason) do
     Agent.update(__MODULE__, fn(current) ->
       {_el, new_state}= pop_in(current, [:tables, to_string(table_number)])
       Map.update!(new_state, :error_count, &(&1 + 1))

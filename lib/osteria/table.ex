@@ -43,7 +43,7 @@ defmodule Osteria.Table do
         new_state = %{state | dishes: []}
         Osteria.Status.update_table(new_state)
         {:noreply, new_state}
-      some_left ->
+      _some_left ->
         new_state = %{state | dishes: new_dishes}
         Osteria.Status.update_table(new_state)
         {:noreply, new_state, waiting_time()}
