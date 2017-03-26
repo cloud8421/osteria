@@ -6,35 +6,35 @@ import Types exposing (..)
 
 orderDecoder : Decoder Types.Order
 orderDecoder =
-    object2 Order
-        ("table_number" := int)
-        ("orders" := list string)
+    map2 Order
+        (field "table_number" int)
+        (field "orders" (list string))
 
 
 lineCookDecoder : Decoder LineCook
 lineCookDecoder =
-    object2 LineCook
-        ("area" := string)
-        ("dishes" := list string)
+    map2 LineCook
+        (field "area" string)
+        (field "dishes" (list string))
 
 
 tableDecoder : Decoder Table
 tableDecoder =
-    object4 Table
-        ("phase" := string)
-        ("size" := int)
-        ("number" := int)
-        ("dishes" := list string)
+    map4 Table
+        (field "phase" string)
+        (field "size" int)
+        (field "number" int)
+        (field "dishes" (list string))
 
 
 statusDecoder : Decoder Status
 statusDecoder =
-    object5 Status
-        ("tables" := (list tableDecoder))
-        ("waiter_queue" := int)
-        ("line_cooks" := (list lineCookDecoder))
-        ("chef" := (list orderDecoder))
-        ("error_count" := int)
+    map5 Status
+        (field "tables" (list tableDecoder))
+        (field "waiter_queue" int)
+        (field "line_cooks" (list lineCookDecoder))
+        (field "chef" (list orderDecoder))
+        (field "error_count" int)
 
 
 encodeOption : Option -> String

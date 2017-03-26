@@ -4,7 +4,6 @@ import Data
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
-import Html.App as Html
 import Json.Decode exposing (decodeString)
 import Platform.Sub as Sub
 import String
@@ -209,7 +208,7 @@ view model =
                     [ configBar
                     , lostTables status.errorCount
                     ]
-                , main' []
+                , main_ []
                     [ tableList status.tables
                     , waiterStatus status.waiterQueue
                     , chefStatus status.chefOrders
@@ -257,7 +256,7 @@ subscriptions model =
         ]
 
 
-main : Program Never
+main : Program Never Model Msg
 main =
     Html.program
         { init = ( model, Cmd.none )
