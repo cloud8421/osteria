@@ -12,7 +12,7 @@ config :osteria, Osteria.Chef,
 config :osteria, Osteria.LineCook,
   cooking_speed: 1500
 
-# config :logger, level: :info
+config :logger, level: :info
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this

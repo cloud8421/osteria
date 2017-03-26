@@ -1,6 +1,8 @@
 defmodule Osteria.Log do
   import IO.ANSI
 
+  require Logger
+
   def log_table_decision(number, dish) do
     "Table #{number} decided for #{dish}"
     |> colorize(yellow())
@@ -69,6 +71,6 @@ defmodule Osteria.Log do
   end
 
   defp log(msg) do
-    # IO.puts msg
+    Logger.info(fn() -> msg end)
   end
 end
