@@ -1,8 +1,6 @@
 defmodule Osteria.Table do
   use GenServer
 
-  alias Osteria.TableMap
-
   defstruct number: 0,
             size: 0,
             phase: :deciding,
@@ -12,18 +10,15 @@ defmodule Osteria.Table do
   @default_waiting_time 15000
 
   def start_link(number, size) do
-    GenServer.start_link(__MODULE__, [number, size], [])
+    GenServer.start_link(__MODULE__, [number, size], name: via(number))
   end
 
   def receive_dish(table_number, dish) do
-    pid = TableMap.where_is(table_number)
-    GenServer.cast(pid, {:receive_dish, dish})
+    GenServer.cast(via(table_number), {:receive_dish, dish})
   end
 
   def init([number, size]) do
     Osteria.Log.log_table_sitting(number)
-    TableMap.register(self(), number)
-    :rand.seed(:exsplus, :os.timestamp)
     state = %__MODULE__{number: number,
                         size: size}
     Osteria.Status.update_table(state)
@@ -89,6 +84,10 @@ defmodule Osteria.Table do
   def terminate(reason, state = %__MODULE__{number: number}) do
     Osteria.Status.delete_table(number, reason)
     {:stop, reason, state}
+  end
+
+  defp via(table_number) do
+    {:via, Registry, {Osteria.TableRegistry, table_number}}
   end
 
   defp schedule_decide do

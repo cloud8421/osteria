@@ -13,8 +13,8 @@ defmodule Osteria.Application do
     # Define workers and child supervisors to be supervised
     children = [
       Plug.Adapters.Cowboy.child_spec(:http, Osteria.Server, [], [port: 4001, dispatch: dispatch()]),
+      supervisor(Registry, [:unique, Osteria.TableRegistry]),
       worker(Osteria.Status, []),
-      worker(Osteria.TableMap, []),
       worker(Osteria.Waiter, []),
       worker(Osteria.Chef, []),
       worker(Osteria.LineCook, [:grill], id: :grill),

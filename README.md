@@ -24,7 +24,7 @@ Compiled js and css is shipped with the codebase, so you don't need to compile b
 
 - Start from `lib/osteria.ex`: here all processes are setup in single supervision tree.
 - The `Osteria.Status` module is used to collect information about each component in the system, so that we can pipe that information to the frontend.
-- You can then move to `lib/osteria/table.ex` and see how each table handles people sitting down and deciding dishes. Note that to keep track of tables a naive `Osteria.TableMap` is provided. A better solution would be a process registry.
+- You can then move to `lib/osteria/table.ex` and see how each table handles people sitting down and deciding dishes. Note that to keep track of tables we use a `Osteria.TableRegistry` Elixir 1.4 process Registry.
 - The `Waiter` module is modeled after the `EventManager` example shown here: <http://elixir-lang.org/blog/2016/07/14/announcing-genstage/>.
 - The `Osteria.Chef` module partitions orders using a `Osteria.Menu` module to figure out a dish type (grill, oven, etc.)
 - If you open the `Osteria.Log` module you can enable logging (roughly commented out towards the end). That way you can see events happening in real time in the console.
